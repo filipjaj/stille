@@ -1,0 +1,103 @@
+/*
+ * Stille-drakt for Payloads adminpanel.
+ *
+ * Payload bygger hele panelet på én gråtonerampe: `--color-base-0` til
+ * `--color-base-1000`. `--theme-elevation-*` peker på rampen, og bakgrunn,
+ * tekst, rammer og skillelinjer peker igjen på elevation. Mørkt tema er den
+ * samme rampen speilvendt.
+ *
+ * Derfor bytter vi rampen i stedet for å overstyre titalls avledede variabler:
+ * én endring slår gjennom overalt, og mørkt tema fortsetter å virke uten at vi
+ * vedlikeholder et eget sett.
+ *
+ * Denne fila er bevisst selvstendig. (payload)/layout.tsx er merket som
+ * autogenerert av Payload og kan bli skrevet over, så temaet skal ikke være
+ * avhengig av en import derfra. Fontstakkene under er derfor gjentatt fra
+ * src/styles/stille/tokens.css, som er kilden når de skal endres.
+ */
+
+:root {
+  /* ── Varm rampe ───────────────────────────────────────────────────────
+   * Ankrene er Stilles egne: 0 = papir, 50 = flate, 150 = linje, 800 = blekk.
+   * Verdiene mellom er interpolert, så rampen holder seg jevn der Payload
+   * bruker trinn Stille ikke definerer.
+   */
+  --color-base-0: #fffef2;
+  --color-base-50: #f5f3eb;
+  --color-base-100: #edeae0;
+  --color-base-150: #dad7ce;
+  --color-base-200: #cbc7bc;
+  --color-base-250: #bcb8ac;
+  --color-base-300: #ada89b;
+  --color-base-350: #9e998b;
+  --color-base-400: #8f8a7b;
+  --color-base-450: #807b6c;
+  --color-base-500: #716d5f;
+  --color-base-550: #666256;
+  --color-base-600: #5b5750;
+  --color-base-650: #4f4c44;
+  --color-base-700: #444139;
+  --color-base-750: #3a362e;
+  --color-base-800: #2f2b23;
+  --color-base-850: #262319;
+  --color-base-900: #1c1a13;
+  --color-base-950: #12100b;
+  --color-base-1000: #0a0906;
+
+  /* ── Statusfarger ─────────────────────────────────────────────────────
+   * Stilles dempede jordtoner erstatter Payloads mettede blå, røde og gule.
+   * Bare 500-trinnet er ankeret; Payload avleder resten selv.
+   */
+  --color-success-500: #4f6b4a;
+  --color-error-500: #8a352b;
+  --color-warning-500: #7f5f25;
+
+  /* ── Typografi ────────────────────────────────────────────────────────
+   * Fontfilene ligger i public/fonts/. Mangler de, faller stakken tilbake på
+   * Georgia og Helvetica, som er de samme fallbackene designsystemet bruker.
+   */
+  --font-body: 'Stille Sans', Helvetica, Arial, sans-serif;
+  --font-serif: 'Stille Serif', Georgia, serif;
+}
+
+/*
+ * Overskriftene i panelet settes i serif, slik admin-lerretene i
+ * designprosjektet viser dem. Payload bruker --font-body overalt som standard.
+ *
+ * Klassene er lest ut av det kjørende panelet, ikke gjettet: dashbordet bruker
+ * .collections__label og .globals__label, listevisningen .list-header__title,
+ * og redigeringsvisningen .doc-header__title. Kortoverskriftene (.card__title)
+ * er 13px etiketter og skal bli stående i sans.
+ */
+.collections__label,
+.globals__label,
+.list-header__title,
+.doc-header__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/*
+ * Stille har ingen avrundede hjørner (--st-radius: 0). Payload runder av
+ * knapper, felt og kort; vi retter det av på flatene brukeren faktisk ser.
+ */
+.btn,
+.field-type input,
+.field-type textarea,
+.field-type .rs__control,
+.popup__content,
+.card,
+.pill {
+  border-radius: 0;
+}
+
+/*
+ * Mørkt tema: Payload speilvender rampen selv, men landingspunktet blir litt
+ * mørkere enn Stilles inverse flate. Vi trekker de to viktigste tilbake på
+ * designsystemets egne verdier.
+ */
+html[data-theme='dark'] {
+  --theme-bg: #2f2b23;
+  --theme-input-bg: #3a352c;
+}
