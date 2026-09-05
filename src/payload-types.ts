@@ -192,6 +192,10 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number
+  /**
+   * Produkter kunden har lagret. Ligger på brukeren og ikke i nettleseren, så lista følger kontoen mellom enheter.
+   */
+  saved?: (number | Product)[] | null
   roles: ('admin' | 'customer')[]
   updatedAt: string
   createdAt: string
@@ -211,81 +215,6 @@ export interface User {
     | null
   password?: string | null
   collection: 'users'
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number
-  alt: string
-  updatedAt: string
-  createdAt: string
-  url?: string | null
-  thumbnailURL?: string | null
-  filename?: string | null
-  mimeType?: string | null
-  filesize?: number | null
-  width?: number | null
-  height?: number | null
-}
-/**
- * Behandlede webhook-hendelser. Slettes ikke automatisk — se milepæl 7 for opprydding.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "webhook-events".
- */
-export interface WebhookEvent {
-  id: number
-  /**
-   * Hendelses-ID fra betalingsleverandøren, for eksempel evt_123.
-   */
-  eventId: string
-  /**
-   * Navnet på betalingsadapteren, for eksempel stripe.
-   */
-  provider: string
-  type: string
-  processedAt: string
-  updatedAt: string
-  createdAt: string
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number
-  title: string
-  slug: string
-  intro?: string | null
-  image?: (number | null) | Media
-  updatedAt: string
-  createdAt: string
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "lookbooks".
- */
-export interface Lookbook {
-  id: number
-  title: string
-  slug: string
-  /**
-   * F.eks. "Høst 2026".
-   */
-  season?: string | null
-  intro?: string | null
-  looks?:
-    | {
-        image: number | Media
-        caption?: string | null
-        products?: (number | Product)[] | null
-        id?: string | null
-      }[]
-    | null
-  updatedAt: string
-  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -406,6 +335,81 @@ export interface Variant {
   createdAt: string
   deletedAt?: string | null
   _status?: ('draft' | 'published') | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number
+  alt: string
+  updatedAt: string
+  createdAt: string
+  url?: string | null
+  thumbnailURL?: string | null
+  filename?: string | null
+  mimeType?: string | null
+  filesize?: number | null
+  width?: number | null
+  height?: number | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number
+  title: string
+  slug: string
+  intro?: string | null
+  image?: (number | null) | Media
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lookbooks".
+ */
+export interface Lookbook {
+  id: number
+  title: string
+  slug: string
+  /**
+   * F.eks. "Høst 2026".
+   */
+  season?: string | null
+  intro?: string | null
+  looks?:
+    | {
+        image: number | Media
+        caption?: string | null
+        products?: (number | Product)[] | null
+        id?: string | null
+      }[]
+    | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * Behandlede webhook-hendelser. Slettes ikke automatisk — se milepæl 7 for opprydding.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "webhook-events".
+ */
+export interface WebhookEvent {
+  id: number
+  /**
+   * Hendelses-ID fra betalingsleverandøren, for eksempel evt_123.
+   */
+  eventId: string
+  /**
+   * Navnet på betalingsadapteren, for eksempel stripe.
+   */
+  provider: string
+  type: string
+  processedAt: string
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -960,6 +964,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  saved?: T
   roles?: T
   updatedAt?: T
   createdAt?: T

@@ -4,90 +4,55 @@ import React from 'react'
 
 import { EmptyState } from '@/components/stille/EmptyState'
 import { ProductCard } from '@/components/stille/ProductCard'
-import { Skeleton } from '@/components/stille/Skeleton'
 import { formatOre } from '@/lib/format'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { Product } from '@/payload-types'
 
 import styles from './SavedSection.module.css'
 
-const STORAGE_KEY = 'stille-lagrede'
-
-function readSavedIds(): number[] {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY)
-    const parsed: unknown = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed.filter((id): id is number => typeof id === 'number') : []
-  } catch {
-    return []
-  }
-}
-
-function writeSavedIds(ids: number[]) {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ids))
-  } catch {
-    // Ingen lagring tilgjengelig (privat modus e.l.) — ignoreres stille.
-  }
-}
-
 /**
- * «Lagrede» produkter. Datamodellen har ingen wishlist-collection i
- * Payload — id-ene lagres derfor i `localStorage` på klienten (samme
- * hjerte-avkrysning som `ProductCard` allerede støtter), mens selve
- * produktdataene alltid hentes ferskt fra Payload. Se rapport.
+ * «Lagrede» produkter. Ligger på `users.saved` (relasjon til `products`),
+ * ikke i `localStorage` — lista skal følge kontoen mellom enheter, ikke
+ * nettleseren. Fjerning er en PATCH på egen bruker, samme mønster som
+ * `ProfileSection` bruker for passordbytte.
  */
-export function SavedSection() {
-  const [ids, setIds] = React.useState<number[] | null>(null)
-  const [products, setProducts] = React.useState<Product[]>([])
-  const [loading, setLoading] = React.useState(true)
+export function SavedSection({
+  userId,
+  initialProducts,
+}: {
+  userId: number
+  initialProducts: Product[]
+}) {
+  const [products, setProducts] = React.useState(initialProducts)
+  const [error, setError] = React.useState<string | null>(null)
 
-  React.useEffect(() => {
-    setIds(readSavedIds())
-  }, [])
+  const remove = async (id: number) => {
+    const previous = products
+    const next = products.filter((product) => product.id !== id)
+    setProducts(next)
+    setError(null)
 
-  React.useEffect(() => {
-    if (ids === null) return
-
-    if (ids.length === 0) {
-      setProducts([])
-      setLoading(false)
-      return
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ saved: next.map((product) => product.id) }),
+      })
+      if (!res.ok) throw new Error()
+    } catch {
+      setProducts(previous)
+      setError('Kunne ikke fjerne produktet. Prøv igjen.')
     }
-
-    let cancelled = false
-    setLoading(true)
-
-    fetch(`/api/products?where[id][in]=${ids.join(',')}&depth=1&limit=${ids.length}`)
-      .then((res) => res.json())
-      .then((data: { docs?: Product[] }) => {
-        if (!cancelled) setProducts(data.docs ?? [])
-      })
-      .catch(() => {
-        if (!cancelled) setProducts([])
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [ids])
-
-  const remove = (id: number) => {
-    const next = (ids ?? []).filter((existing) => existing !== id)
-    setIds(next)
-    writeSavedIds(next)
   }
 
   return (
     <section>
       <h2>Lagrede</h2>
 
-      {loading ? (
-        <Skeleton lines={3} height={200} />
-      ) : products.length === 0 ? (
+      {error ? <p style={{ color: 'var(--st-error)' }}>{error}</p> : null}
+
+      {products.length === 0 ? (
         <EmptyState title="Ingen lagrede objekter.">
           Hjertet på et produktkort legger det til her.
         </EmptyState>
@@ -110,7 +75,7 @@ export function SavedSection() {
                 saveable
                 saved
                 onSaveChange={(saved) => {
-                  if (!saved) remove(product.id)
+                  if (!saved) void remove(product.id)
                 }}
               />
             )

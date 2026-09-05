@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 
 import { Sidebar, type SidebarItem } from '@/components/stille/Sidebar'
 import { getPayloadClient } from '@/lib/payload'
-import type { Order } from '@/payload-types'
+import type { Order, Product } from '@/payload-types'
 
 import { AddressesSection } from './AddressesSection'
 import styles from './konto.module.css'
@@ -75,7 +75,13 @@ export default async function KontoPage({ searchParams }: { searchParams: Promis
   } else if (section === 'profil') {
     content = <ProfileSection user={user} />
   } else {
-    content = <SavedSection />
+    // `payload.auth` populerer ikke relasjoner — hent brukeren på nytt med
+    // dybde nok til at `saved` gir hele produktobjekter, ikke bare id-er.
+    const fullUser = await payload.findByID({ collection: 'users', id: user.id, depth: 1 })
+    const savedProducts = (fullUser.saved ?? []).filter(
+      (item): item is Product => typeof item === 'object' && item !== null,
+    )
+    content = <SavedSection userId={user.id} initialProducts={savedProducts} />
   }
 
   return (
