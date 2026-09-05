@@ -121,8 +121,10 @@ Satsene: 25 % standard, 15 % næringsmidler, 12 % persontransport/overnatting/ki
 
 ### 3.2 `src/ecommerce/access`
 
-`plugin-ecommerce` krever seks access-funksjoner: `adminOnlyFieldAccess`,
-`adminOrPublishedStatus`, `isAdmin`, `isAuthenticated`, `isCustomer`, `isDocumentOwner`.
+`plugin-ecommerce` krever fire access-funksjoner — `adminOnlyFieldAccess`,
+`adminOrPublishedStatus`, `isAdmin`, `isDocumentOwner` — og godtar fire valgfrie, hvorav vi
+implementerer `isAuthenticated` og `isCustomer`. Typene er ikke like: `adminOnlyFieldAccess`
+og `isCustomer` er `FieldAccess`, resten er `Access` og kan returnere en `Where`-spørring.
 
 Disse implementeres mot et nytt `roles`-felt på `Users` (`admin` | `customer`, flervalg,
 default `customer`). `isDocumentOwner` sammenligner `req.user.id` mot dokumentets
@@ -199,23 +201,34 @@ Nye filer:
 
 ```
 src/money/types.ts
+src/money/vat.ts
+src/money/vat.spec.ts
 src/money/totals.ts
-src/money/totals.test.ts
+src/money/totals.spec.ts
+src/money/index.ts
 src/ecommerce/access/index.ts
-src/ecommerce/access/index.test.ts
+src/ecommerce/access/index.spec.ts
+src/ecommerce/fields/vatRate.ts
 src/ecommerce/config.ts
 src/collections/WebhookEvents.ts
 src/seed/index.ts
+src/seed/run.ts
 ```
 
 Endrede filer:
 
 ```
 src/collections/Users.ts     roles-felt
-src/payload.config.ts        montering av plugin + e-postadapter
+src/payload.config.ts        reparert migrasjonsimport, montering av plugin + e-postadapter
+vitest.config.mts            plukk opp enhetstester i src/
 package.json                 nye avhengigheter, seed-script
 .env.example                 nye variabler
 ```
+
+Pre-eksisterende feil som må rettes først: `src/payload.config.ts:13` default-importerer
+`./db/migrations`, men migrasjonene ligger i `src/migrations/` og eksporteres navngitt.
+Prosjektet typechecker ikke i dag. Importen kobles samtidig til `prodMigrations`, som var
+den åpenbare hensikten.
 
 Merk: `.env`-filer er utenfor det jeg har lesetilgang til i denne sesjonen. Endringene i
 `.env.example` leveres som en diff du limer inn selv, eller via en Handoff-oppgave.
