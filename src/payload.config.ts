@@ -7,10 +7,22 @@ import { fileURLToPath } from 'url'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { r2Storage } from '@payloadcms/storage-r2'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { WebhookEvents } from './collections/WebhookEvents'
+import { Articles } from './collections/Articles'
+import { Categories } from './collections/Categories'
+import { Faqs } from './collections/Faqs'
+import { Lookbooks } from './collections/Lookbooks'
+import { Pages } from './collections/Pages'
+import { Footer } from './globals/Footer'
+import { Header } from './globals/Header'
+import { Newsletter } from './globals/Newsletter'
+import { Shop } from './globals/Shop'
 import { migrations } from './migrations'
+import { ecommerce } from './ecommerce/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,7 +76,19 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    WebhookEvents,
+    // Innholdsmodellen fra designprosjektet. Butikkflatene leser alt herfra —
+    // ingen hardkodede data i rutene.
+    Categories,
+    Lookbooks,
+    Articles,
+    Faqs,
+    Pages,
+  ],
+  globals: [Header, Footer, Newsletter, Shop],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -73,6 +97,10 @@ export default buildConfig({
   db: sqliteD1Adapter({
     binding: cloudflare.env.D1,
     prodMigrations: migrations,
+    // Dev skal kjøre de samme migrasjonene som prod. Med push (default i dev)
+    // synkroniseres skjemaet direkte fra config-en, og migrasjonene testes
+    // aldri før deploydagen.
+    push: false,
   }),
   logger: isProduction ? cloudflareLogger : undefined,
   plugins: [
@@ -80,7 +108,13 @@ export default buildConfig({
       bucket: cloudflare.env.R2,
       collections: { media: true },
     }),
+    ecommerce,
   ],
+  email: resendAdapter({
+    apiKey: process.env.RESEND_API_KEY || '',
+    defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@example.com',
+    defaultFromName: process.env.EMAIL_FROM_NAME || 'Nettbutikk',
+  }),
 })
 
 // Adapted from https://github.com/opennextjs/opennextjs-cloudflare/blob/d00b3a13e42e65aad76fba41774815726422cc39/packages/cloudflare/src/api/cloudflare-context.ts#L328C36-L328C46
