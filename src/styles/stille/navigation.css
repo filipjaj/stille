@@ -1,0 +1,159 @@
+/*
+ * Stille designsystem — navigasjonslaget.
+ * Portert ordrett fra designprosjektets komponentbunt (_ds_bundle.js),
+ * components/navigation/{Breadcrumbs,Pagination,Tabs}.jsx — i originalen
+ * sprøytet hver av disse CSS-en sin inn selv via ensureStyles(); her ligger
+ * den samlet i stilarket i stedet.
+ *
+ * Forutsetter tokens.css (fargevariablene) og components.css (st-icon).
+ * Kompakt-tetthetsreglene for .st-tab, .st-page, .st-page-gap og
+ * .st-pagination ligger allerede i tokens.css.
+ */
+
+/* ── Brødsmuler ─────────────────────────────────────────────────────────── */
+.st-crumbs {
+  font: 12px / 1.5 var(--st-body);
+  color: var(--st-ink);
+  margin: 0;
+  padding: 0;
+}
+.st-crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.st-crumbs li {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+.st-crumbs li + li::before {
+  content: '/';
+  color: var(--st-muted);
+}
+.st-crumbs a {
+  color: var(--st-ink);
+  text-decoration: none;
+  box-shadow: inset 0 -1px var(--st-line);
+  padding: 4px 0;
+}
+.st-crumbs a:hover {
+  box-shadow: inset 0 -1px var(--st-ink);
+}
+.st-crumbs [aria-current] {
+  color: var(--st-muted);
+}
+
+/* ── Sidenumre ──────────────────────────────────────────────────────────── */
+.st-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid var(--st-line);
+  padding-top: 24px;
+  font: 14px / 1.5 var(--st-body);
+  color: var(--st-ink);
+}
+.st-pagination ol {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.st-page {
+  min-width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--st-ink);
+  font: 14px / 1.5 var(--st-body);
+  cursor: pointer;
+  padding: 0 8px;
+}
+.st-page:hover {
+  border-color: var(--st-line);
+}
+.st-page[aria-current='page'] {
+  border-color: var(--st-ink);
+}
+.st-page-gap {
+  min-width: 24px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--st-muted);
+}
+.st-page-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: 0;
+  padding: 10px 0;
+  color: var(--st-ink);
+  font: 14px / 1.5 var(--st-body);
+  cursor: pointer;
+  border-bottom: 1px solid var(--st-ink);
+}
+.st-page-nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Faner ──────────────────────────────────────────────────────────────── */
+.st-tabs {
+  font: 14px / 1.5 var(--st-body);
+  color: var(--st-ink);
+}
+.st-tablist {
+  display: flex;
+  gap: 32px;
+  border-bottom: 1px solid var(--st-line);
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.st-tablist::-webkit-scrollbar {
+  display: none;
+}
+.st-tab {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  padding: 12px 0;
+  color: var(--st-muted);
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px;
+}
+.st-tab:hover {
+  color: var(--st-ink);
+}
+.st-tab[aria-selected='true'] {
+  color: var(--st-ink);
+  border-bottom-color: var(--st-ink);
+}
+.st-tabs.serif .st-tab {
+  font: 24px / 1.3 var(--st-heading);
+  padding: 16px 0;
+}
+.st-tabpanel {
+  padding-top: 24px;
+  font: 16px / 1.6 var(--st-body);
+}
+.st-tabpanel p {
+  margin: 0 0 16px;
+  max-width: 65ch;
+}
