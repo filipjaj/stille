@@ -225,6 +225,10 @@ export async function seed(payload: Payload): Promise<void> {
       sku: product.sku,
       description: product.description,
       care: PRODUCT_CARE,
+      // Plugin-en gater prisen bak dette flagget. Uten det står produktet med
+      // pris, men markert som at NOK ikke er aktivert — og alt som leser prisen
+      // gjennom plugin-ens egen spørring må omgå det.
+      priceInNOKEnabled: true,
       priceInNOK: product.priceGross,
       vatRate: String(product.vatRate) as '25' | '15' | '12' | '0',
       inventory: 12,
