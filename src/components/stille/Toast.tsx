@@ -28,14 +28,9 @@ export type ToastProps = ToastOwnProps &
  * handling. Auto-lukker etter `duration` ms med mindre `duration` er 0.
  * Portert fra designprosjektets _ref/components/core/Toast.jsx.
  *
- * Merk: bundelen definerer egne klasser (`st-toast-region`, `st-toast`,
- * `st-toast-action`, `st-toast-close`) via en CSS-in-JS-injeksjon
- * (`ensureToastStyles`) som denne porten ikke skal kjøre. `components.css`
- * har ingen av disse klassene — den har derimot `.st-status`/`.st-status.fixed`,
- * som tilhører designsystemets separate `Status`-komponent (samme visuelle
- * idé: kullfylt felt, `role="status"`). Vi gjenbruker `.st-status` her på
- * teamets instruks, men handlings- og lukkeknappen mangler dermed egne
- * klasser og får ingen layoutstyling (flex/gap) fra CSS-en som finnes i dag.
+ * Klassene ligger i components.css. De lå opprinnelig som CSS-in-JS i
+ * bundelen og er hentet ut derfra — Toast deler ikke klasser med `Status`,
+ * selv om de to ser like ut.
  */
 export function Toast({
   children,
@@ -57,28 +52,26 @@ export function Toast({
 
   if (!open) return null
 
-  const classes = [
-    'st-status',
-    fixed ? 'fixed' : null,
-    tone === 'error' ? 'error' : null,
-    className,
-  ]
+  const regionClasses = ['st-toast-region', fixed ? null : 'inline'].filter(Boolean).join(' ')
+  const toastClasses = ['st-toast', tone === 'error' ? 'error' : null, className]
     .filter(Boolean)
     .join(' ')
 
   return (
-    <div role="status" aria-live="polite" className={classes} {...rest}>
-      <span>{children}</span>
-      {action ? (
-        <button type="button" onClick={onAction}>
-          {action}
-        </button>
-      ) : null}
-      {onClose ? (
-        <button type="button" aria-label="Lukk" onClick={onClose}>
-          <Icon name="x" size={20} />
-        </button>
-      ) : null}
+    <div className={regionClasses}>
+      <div role="status" aria-live="polite" className={toastClasses} {...rest}>
+        <span>{children}</span>
+        {action ? (
+          <button type="button" className="st-toast-action" onClick={onAction}>
+            {action}
+          </button>
+        ) : null}
+        {onClose ? (
+          <button type="button" className="st-toast-close" aria-label="Lukk" onClick={onClose}>
+            <Icon name="x" size={20} />
+          </button>
+        ) : null}
+      </div>
     </div>
   )
 }

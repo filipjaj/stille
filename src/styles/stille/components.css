@@ -526,3 +526,61 @@ textarea.st-input {
     transition: none !important;
   }
 }
+
+/* ── Toast ──────────────────────────────────────────────────────────────── */
+/* Toast har egne klasser, ikke .st-status — den tilhører Status-komponenten.
+   Reglene lå som CSS-in-JS i bundelen og er hentet ut hit, med varianter. */
+.st-toast-region {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 120;
+  display: grid;
+  gap: 8px;
+  max-width: calc(100vw - 32px);
+  width: max-content;
+}
+.st-toast-region.inline {
+  position: static;
+  transform: none;
+  width: auto;
+}
+.st-toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 52px;
+  padding: 14px 16px 14px 24px;
+  background: var(--st-ink);
+  color: var(--st-paper);
+  font: 14px / 1.5 var(--st-body);
+  box-sizing: border-box;
+}
+.st-toast.error {
+  background: var(--st-error);
+}
+.st-toast .st-toast-action {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--st-paper);
+  color: var(--st-paper);
+  font: 14px / 1.5 var(--st-body);
+  padding: 2px 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.st-toast .st-toast-close {
+  background: none;
+  border: 0;
+  color: var(--st-paper);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  margin-left: -8px;
+}
