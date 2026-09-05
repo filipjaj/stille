@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto'
 import fs from 'fs'
 import path from 'path'
 import type { Payload } from 'payload'
@@ -5,7 +6,20 @@ import type { Payload } from 'payload'
 import { articles, faq, products, productInfo } from './content'
 
 const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@example.com'
-const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'endre-meg'
+
+/**
+ * Passordet må komme utenfra, eller genereres tilfeldig.
+ *
+ * En boilerplate med et fast standardpassord i kildekoden er et innbrudd som
+ * venter på å skje: repoet blir klonet og deployet, og passordet er kjent av
+ * alle som har sett fila. Er `SEED_ADMIN_PASSWORD` ikke satt, lager vi et
+ * tilfeldig ett og skriver det ut én gang.
+ */
+function resolveAdminPassword(): { password: string; generated: boolean } {
+  const fromEnv = process.env.SEED_ADMIN_PASSWORD
+  if (fromEnv) return { password: fromEnv, generated: false }
+  return { password: randomBytes(24).toString('base64url'), generated: true }
+}
 
 const IMAGE_DIR = path.resolve(process.cwd(), 'public/images')
 
@@ -33,22 +47,30 @@ export async function seed(payload: Payload): Promise<void> {
   })
 
   if (existingAdmin.totalDocs === 0) {
+    const { password, generated } = resolveAdminPassword()
     await payload.create({
       collection: 'users',
-      data: { email: ADMIN_EMAIL, password: ADMIN_PASSWORD, roles: ['admin'] },
+      data: { email: ADMIN_EMAIL, password, roles: ['admin'] },
     })
     log(`Opprettet administrator ${ADMIN_EMAIL}`)
+    if (generated) {
+      payload.logger.warn(
+        `Passordet ble generert siden SEED_ADMIN_PASSWORD ikke var satt. ` +
+          `Logg inn med dette og bytt det med en gang — det skrives ikke ut igjen:\n\n    ${password}\n`,
+      )
+    }
   } else {
-    // En bruker som fantes fra før kan mangle rollen, og ville da vært låst
-    // ute av Ecommerce-collections.
+    // Seed eskalerer aldri en eksisterende bruker til administrator. En konto
+    // som allerede finnes kan tilhøre en kunde, og å gi den admin-rettigheter
+    // fordi e-posten tilfeldigvis matcher SEED_ADMIN_EMAIL ville vært en
+    // rettighetseskalering utløst av en miljøvariabel.
     const admin = existingAdmin.docs[0]
     if (!admin.roles?.includes('admin')) {
-      await payload.update({
-        collection: 'users',
-        id: admin.id,
-        data: { roles: [...(admin.roles ?? []), 'admin'] },
-      })
-      log(`Ga ${ADMIN_EMAIL} admin-rollen`)
+      payload.logger.warn(
+        `Brukeren ${ADMIN_EMAIL} finnes allerede, men mangler admin-rollen. ` +
+          'Seed endrer ikke rettigheter på eksisterende kontoer. ' +
+          'Gi rollen manuelt i adminen, eller sett SEED_ADMIN_EMAIL til en ubrukt adresse.',
+      )
     } else {
       log(`Administrator ${ADMIN_EMAIL} finnes allerede`)
     }

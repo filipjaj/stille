@@ -1,0 +1,123 @@
+/*
+ * Butikkskallet — topp, bunn og sidebredde.
+ *
+ * Målene er lest ut av designprosjektets lerret («Butikk desktop.dc.html» og
+ * «Butikk mobil.dc.html»). Lerretene er faste artboards på 1440 og 390 px;
+ * media queries her er implementasjonens ansvar, ikke designets.
+ */
+
+.st-shop {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.st-shop-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--st-page-max);
+  margin: 0 auto;
+  padding: 0 var(--st-margin) var(--st-space-80);
+}
+
+/* ── Topp ───────────────────────────────────────────────────────────────── */
+.st-shop-header {
+  width: 100%;
+  max-width: var(--st-page-max);
+  margin: 0 auto;
+  padding: var(--st-space-32) var(--st-margin);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--st-space-24);
+  border-bottom: 1px solid var(--st-line);
+  flex-wrap: wrap;
+}
+
+.st-wordmark {
+  font: 400 var(--st-text-wordmark) / 0.9 var(--st-display);
+  letter-spacing: var(--st-tracking-wordmark);
+  text-decoration: none;
+  color: var(--st-ink);
+}
+
+.st-wordmark-small {
+  font-size: 36px;
+}
+
+.st-shop-nav {
+  display: flex;
+  gap: var(--st-space-24);
+  font: var(--st-font-ui);
+  flex-wrap: wrap;
+}
+
+.st-nav-link {
+  color: var(--st-ink);
+  text-decoration: none;
+}
+.st-nav-link:hover {
+  color: var(--st-muted);
+}
+.st-nav-link[aria-current='page'] {
+  box-shadow: inset 0 -1px var(--st-ink);
+}
+
+/* ── Bunn ───────────────────────────────────────────────────────────────── */
+.st-shop-footer {
+  border-top: 1px solid var(--st-line);
+  padding: var(--st-space-40) var(--st-margin);
+  max-width: var(--st-page-max);
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--st-space-24);
+  flex-wrap: wrap;
+  font: var(--st-font-ui);
+}
+
+.st-shop-footer-text {
+  margin: 0;
+}
+
+.st-shop-footer-note {
+  font-size: var(--st-text-caption);
+  color: var(--st-muted);
+}
+
+/* ── Bildeflate ─────────────────────────────────────────────────────────── */
+/*
+ * Brukes der et bilde mangler. Designet legger alltid bildene på en sandflate
+ * med `background: var(--st-surface) center/cover`, så en manglende fil
+ * degraderer til nøyaktig den flaten i stedet for et brukket bilde.
+ */
+.st-media {
+  display: block;
+  width: 100%;
+  background: var(--st-surface) center / cover no-repeat;
+}
+
+/* ── Smale skjermer ─────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .st-shop-header,
+  .st-shop-footer,
+  .st-shop-main {
+    padding-left: var(--st-margin-mobile);
+    padding-right: var(--st-margin-mobile);
+  }
+
+  .st-shop-header {
+    padding-top: var(--st-space-24);
+    padding-bottom: var(--st-space-16);
+  }
+
+  .st-wordmark {
+    font-size: 44px;
+  }
+
+  .st-shop-nav {
+    width: 100%;
+  }
+}

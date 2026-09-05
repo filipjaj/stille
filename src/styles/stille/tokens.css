@@ -279,6 +279,21 @@
   padding-top: 16px;
 }
 
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+}
+img,
+video {
+  max-width: 100%;
+}
+
 /* ── Grunnflate ─────────────────────────────────────────────────────────── */
 /* Malen fra Payload setter html{background:#000}. Stille-flatene er papir. */
 html:has(.st) {

@@ -1,18 +1,45 @@
 import React from 'react'
-import './styles.css'
+
+import '@/styles/stille/tokens.css'
+import '@/styles/stille/components.css'
+import '@/styles/stille/navigation.css'
+import '@/styles/stille/admin.css'
+import '@/styles/stille/shop.css'
+
+import { Footer } from '@/components/butikk/Footer'
+import { Header } from '@/components/butikk/Header'
+import { Providers } from '@/components/butikk/Providers'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  title: {
+    default: 'stille',
+    template: '%s — stille',
+  },
+  description: 'Objekter og fortellinger med plass til hverdagen.',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+/**
+ * Rot for alle butikkflatene. `.st` slår på designsystemets grunnflate,
+ * typografi og fokusring.
+ *
+ * Malens egen styles.css er fjernet: den satte svart bakgrunn og system-font
+ * for velkomstsiden som ikke finnes lenger, og kranglet med designsystemet om
+ * spesifisitet. Resetten den bidro med ligger nå i tokens.css.
+ *
+ * Header og Footer er serverkomponenter som leser sine globals fra Payload.
+ * Providers gir kurvkonteksten til klientkomponentene under.
+ */
+export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="nb">
-      <body>
-        <main>{children}</main>
+      <body className="st">
+        <Providers>
+          <div className="st-shop">
+            <Header />
+            <main className="st-shop-main">{children}</main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   )

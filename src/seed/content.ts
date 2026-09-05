@@ -38,8 +38,7 @@ export const products: Product[] = [
     priceGross: 64000,
     vatRate: 25,
     image: image('stilleben'),
-    description:
-      'Et stilleben i steingods og vasket lin. Skål, kopp og duk som tåler daglig bruk.',
+    description: 'Et stilleben i steingods og vasket lin. Skål, kopp og duk som tåler daglig bruk.',
   },
   {
     id: 2,
@@ -210,8 +209,7 @@ export const productInfo: Disclosure[] = [
 export const faq: Disclosure[] = [
   {
     title: 'Hvor lages tingene?',
-    content:
-      'Alt tegnes i Hamar og produseres hos verksteder i Telemark, Østfold og Normandie.',
+    content: 'Alt tegnes i Hamar og produseres hos verksteder i Telemark, Østfold og Normandie.',
   },
   { title: 'Hvor lang er leveringstiden?', content: '3–5 dager i Norge. Vi sender med Posten.' },
   { title: 'Kan jeg returnere?', content: 'Ja, innen 30 dager. Varen må være ubrukt.' },
