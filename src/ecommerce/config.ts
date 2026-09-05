@@ -9,6 +9,7 @@ import {
   isCustomer,
   isDocumentOwner,
 } from './access'
+import { productContentFields } from './fields/product'
 import { vatRateField } from './fields/vatRate'
 
 /** Norske kroner. `decimals: 2` gjør at plugin-en lagrer priser i øre. */
@@ -43,7 +44,12 @@ export const ecommerce = ecommercePlugin({
   products: {
     productsCollectionOverride: ({ defaultCollection }) => ({
       ...defaultCollection,
-      fields: [...defaultCollection.fields, vatRateField],
+      admin: {
+        ...defaultCollection.admin,
+        useAsTitle: 'title',
+        defaultColumns: ['title', 'sku', 'priceInNOK', 'inventory', '_status'],
+      },
+      fields: [...defaultCollection.fields, ...productContentFields, vatRateField],
     }),
   },
 })

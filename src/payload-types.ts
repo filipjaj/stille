@@ -300,6 +300,46 @@ export interface Product {
   };
   priceInNOKEnabled?: boolean | null;
   priceInNOK?: number | null;
+  title: string;
+  /**
+   * Brukes i URL-en: /produkt/<slug>
+   */
+  slug: string;
+  sku: string;
+  /**
+   * Vises på produktkortet og øverst på produktsiden.
+   */
+  description?: string | null;
+  /**
+   * 4:5, minst 1600 px. Første bilde vises på produktkortet.
+   */
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  category?: (number | null) | Category;
+  lookbook?: (number | null) | Lookbook;
+  /**
+   * Heltall i øre, som prisen. Tomt hvis produktet ikke er nedsatt.
+   */
+  compareAt?: number | null;
+  /**
+   * Kommaseparert, for eksempel «keramikk, lin, stilleben».
+   */
+  tags?: string | null;
+  /**
+   * Overstyrer tittel, beskrivelse og delingsbilde for søkemotorer og sosiale medier. Stå tomt for å bruke innholdet på siden.
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Vises når siden deles i sosiale medier (Open Graph).
+     */
+    image?: (number | null) | Media;
+  };
   vatRate: '25' | '15' | '12' | '0';
   updatedAt: string;
   createdAt: string;
@@ -1242,6 +1282,27 @@ export interface ProductsSelect<T extends boolean = true> {
   variants?: T;
   priceInNOKEnabled?: T;
   priceInNOK?: T;
+  title?: T;
+  slug?: T;
+  sku?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  category?: T;
+  lookbook?: T;
+  compareAt?: T;
+  tags?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   vatRate?: T;
   updatedAt?: T;
   createdAt?: T;

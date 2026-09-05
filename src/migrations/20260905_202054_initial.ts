@@ -761,19 +761,50 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`variant_options_updated_at_idx\` ON \`variant_options\` (\`updated_at\`);`)
   await db.run(sql`CREATE INDEX \`variant_options_created_at_idx\` ON \`variant_options\` (\`created_at\`);`)
   await db.run(sql`CREATE INDEX \`variant_options_deleted_at_idx\` ON \`variant_options\` (\`deleted_at\`);`)
+  await db.run(sql`CREATE TABLE \`products_images\` (
+  	\`_order\` integer NOT NULL,
+  	\`_parent_id\` integer NOT NULL,
+  	\`id\` text PRIMARY KEY NOT NULL,
+  	\`image_id\` integer,
+  	FOREIGN KEY (\`image_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`products\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`products_images_order_idx\` ON \`products_images\` (\`_order\`);`)
+  await db.run(sql`CREATE INDEX \`products_images_parent_id_idx\` ON \`products_images\` (\`_parent_id\`);`)
+  await db.run(sql`CREATE INDEX \`products_images_image_idx\` ON \`products_images\` (\`image_id\`);`)
   await db.run(sql`CREATE TABLE \`products\` (
   	\`id\` integer PRIMARY KEY NOT NULL,
   	\`inventory\` numeric DEFAULT 0,
   	\`enable_variants\` integer,
   	\`price_in_n_o_k_enabled\` integer,
   	\`price_in_n_o_k\` numeric,
+  	\`title\` text,
+  	\`slug\` text,
+  	\`sku\` text,
+  	\`description\` text,
+  	\`category_id\` integer,
+  	\`lookbook_id\` integer,
+  	\`compare_at\` numeric,
+  	\`tags\` text,
+  	\`seo_title\` text,
+  	\`seo_description\` text,
+  	\`seo_image_id\` integer,
   	\`vat_rate\` text DEFAULT '25',
   	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`created_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`deleted_at\` text,
-  	\`_status\` text DEFAULT 'draft'
+  	\`_status\` text DEFAULT 'draft',
+  	FOREIGN KEY (\`category_id\`) REFERENCES \`categories\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`lookbook_id\`) REFERENCES \`lookbooks\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`seo_image_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null
   );
   `)
+  await db.run(sql`CREATE UNIQUE INDEX \`products_slug_idx\` ON \`products\` (\`slug\`);`)
+  await db.run(sql`CREATE INDEX \`products_sku_idx\` ON \`products\` (\`sku\`);`)
+  await db.run(sql`CREATE INDEX \`products_category_idx\` ON \`products\` (\`category_id\`);`)
+  await db.run(sql`CREATE INDEX \`products_lookbook_idx\` ON \`products\` (\`lookbook_id\`);`)
+  await db.run(sql`CREATE INDEX \`products_seo_seo_image_idx\` ON \`products\` (\`seo_image_id\`);`)
   await db.run(sql`CREATE INDEX \`products_updated_at_idx\` ON \`products\` (\`updated_at\`);`)
   await db.run(sql`CREATE INDEX \`products_created_at_idx\` ON \`products\` (\`created_at\`);`)
   await db.run(sql`CREATE INDEX \`products_deleted_at_idx\` ON \`products\` (\`deleted_at\`);`)
@@ -792,6 +823,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`CREATE INDEX \`products_rels_parent_idx\` ON \`products_rels\` (\`parent_id\`);`)
   await db.run(sql`CREATE INDEX \`products_rels_path_idx\` ON \`products_rels\` (\`path\`);`)
   await db.run(sql`CREATE INDEX \`products_rels_variant_types_id_idx\` ON \`products_rels\` (\`variant_types_id\`);`)
+  await db.run(sql`CREATE TABLE \`_products_v_version_images\` (
+  	\`_order\` integer NOT NULL,
+  	\`_parent_id\` integer NOT NULL,
+  	\`id\` integer PRIMARY KEY NOT NULL,
+  	\`image_id\` integer,
+  	\`_uuid\` text,
+  	FOREIGN KEY (\`image_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`_parent_id\`) REFERENCES \`_products_v\`(\`id\`) ON UPDATE no action ON DELETE cascade
+  );
+  `)
+  await db.run(sql`CREATE INDEX \`_products_v_version_images_order_idx\` ON \`_products_v_version_images\` (\`_order\`);`)
+  await db.run(sql`CREATE INDEX \`_products_v_version_images_parent_id_idx\` ON \`_products_v_version_images\` (\`_parent_id\`);`)
+  await db.run(sql`CREATE INDEX \`_products_v_version_images_image_idx\` ON \`_products_v_version_images\` (\`image_id\`);`)
   await db.run(sql`CREATE TABLE \`_products_v\` (
   	\`id\` integer PRIMARY KEY NOT NULL,
   	\`parent_id\` integer,
@@ -799,6 +843,17 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`version_enable_variants\` integer,
   	\`version_price_in_n_o_k_enabled\` integer,
   	\`version_price_in_n_o_k\` numeric,
+  	\`version_title\` text,
+  	\`version_slug\` text,
+  	\`version_sku\` text,
+  	\`version_description\` text,
+  	\`version_category_id\` integer,
+  	\`version_lookbook_id\` integer,
+  	\`version_compare_at\` numeric,
+  	\`version_tags\` text,
+  	\`version_seo_title\` text,
+  	\`version_seo_description\` text,
+  	\`version_seo_image_id\` integer,
   	\`version_vat_rate\` text DEFAULT '25',
   	\`version_updated_at\` text,
   	\`version_created_at\` text,
@@ -808,10 +863,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	\`updated_at\` text DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) NOT NULL,
   	\`latest\` integer,
   	\`autosave\` integer,
-  	FOREIGN KEY (\`parent_id\`) REFERENCES \`products\`(\`id\`) ON UPDATE no action ON DELETE set null
+  	FOREIGN KEY (\`parent_id\`) REFERENCES \`products\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`version_category_id\`) REFERENCES \`categories\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`version_lookbook_id\`) REFERENCES \`lookbooks\`(\`id\`) ON UPDATE no action ON DELETE set null,
+  	FOREIGN KEY (\`version_seo_image_id\`) REFERENCES \`media\`(\`id\`) ON UPDATE no action ON DELETE set null
   );
   `)
   await db.run(sql`CREATE INDEX \`_products_v_parent_idx\` ON \`_products_v\` (\`parent_id\`);`)
+  await db.run(sql`CREATE INDEX \`_products_v_version_version_slug_idx\` ON \`_products_v\` (\`version_slug\`);`)
+  await db.run(sql`CREATE INDEX \`_products_v_version_version_sku_idx\` ON \`_products_v\` (\`version_sku\`);`)
+  await db.run(sql`CREATE INDEX \`_products_v_version_version_category_idx\` ON \`_products_v\` (\`version_category_id\`);`)
+  await db.run(sql`CREATE INDEX \`_products_v_version_version_lookbook_idx\` ON \`_products_v\` (\`version_lookbook_id\`);`)
+  await db.run(sql`CREATE INDEX \`_products_v_version_seo_version_seo_image_idx\` ON \`_products_v\` (\`version_seo_image_id\`);`)
   await db.run(sql`CREATE INDEX \`_products_v_version_version_updated_at_idx\` ON \`_products_v\` (\`version_updated_at\`);`)
   await db.run(sql`CREATE INDEX \`_products_v_version_version_created_at_idx\` ON \`_products_v\` (\`version_created_at\`);`)
   await db.run(sql`CREATE INDEX \`_products_v_version_version_deleted_at_idx\` ON \`_products_v\` (\`version_deleted_at\`);`)
@@ -1199,8 +1262,10 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   await db.run(sql`DROP TABLE \`_variants_v_rels\`;`)
   await db.run(sql`DROP TABLE \`variant_types\`;`)
   await db.run(sql`DROP TABLE \`variant_options\`;`)
+  await db.run(sql`DROP TABLE \`products_images\`;`)
   await db.run(sql`DROP TABLE \`products\`;`)
   await db.run(sql`DROP TABLE \`products_rels\`;`)
+  await db.run(sql`DROP TABLE \`_products_v_version_images\`;`)
   await db.run(sql`DROP TABLE \`_products_v\`;`)
   await db.run(sql`DROP TABLE \`_products_v_rels\`;`)
   await db.run(sql`DROP TABLE \`carts_items\`;`)
