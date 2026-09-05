@@ -1,0 +1,245 @@
+/*
+ * Oversiktssiden, portert fra designprosjektets `Oversikt.dc.html`.
+ * Målene er lest rett ut av lerretets inline-stiler. Media queries nederst er
+ * lagt til i implementasjonen — lerretet er en fast 1120px-artboard og sier
+ * ingenting om smale skjermer.
+ */
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 40px 120px;
+  color: var(--st-ink);
+  font: 16px / 1.6 var(--st-body);
+}
+
+/* ── Topp ───────────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--st-line);
+  padding-bottom: 24px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font: 400 56px / 0.9 var(--st-display);
+  letter-spacing: -0.05em;
+}
+
+.meta {
+  font: 12px / 1.5 var(--st-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Intro ──────────────────────────────────────────────────────────────── */
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 80px;
+  padding: 64px 0;
+}
+
+.page .title {
+  font: 400 clamp(42px, 5.5vw, 72px) / 1.12 var(--st-heading);
+  letter-spacing: -0.025em;
+  margin: 20px 0 0;
+}
+
+.lede {
+  margin: 24px 0 0;
+  max-width: 560px;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+/* hint-size="220px,48px" på lerretet. */
+.actions > * {
+  min-width: 220px;
+}
+
+.assumptions {
+  background: var(--st-surface);
+  padding: 32px;
+  display: grid;
+  gap: 16px;
+  align-self: start;
+}
+
+.assumptionsList {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+
+/* ── Seksjoner ──────────────────────────────────────────────────────────── */
+.section {
+  border-top: 1px solid var(--st-line);
+  padding-top: 24px;
+}
+
+.sectionSpaced {
+  margin-top: 80px;
+}
+
+.page .sectionTitle {
+  font: 400 36px / 1.12 var(--st-heading);
+  margin: 0 0 40px;
+}
+
+.page .sectionTitleTight {
+  font: 400 36px / 1.12 var(--st-heading);
+  margin: 0 0 24px;
+}
+
+/* ── Skjermer ───────────────────────────────────────────────────────────── */
+.screens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 32px 24px;
+}
+
+.screen {
+  text-decoration: none;
+  color: var(--st-ink);
+  display: grid;
+  gap: 12px;
+  /* Uten dette strekker rutenettsraden kortet, og miniatyrens 4:5 brytes. */
+  align-content: start;
+}
+
+.screenThumb {
+  aspect-ratio: 4 / 5;
+  background: var(--st-surface);
+  display: grid;
+  place-items: center;
+  font: 400 48px / 1 var(--st-heading);
+  color: var(--st-muted);
+}
+
+.screenGroup {
+  display: block;
+  font: 12px / 1.5 var(--st-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--st-muted);
+}
+
+.screenTitle {
+  font: 400 20px / 1.3 var(--st-heading);
+}
+
+/* Lerretet er statisk; en klikkbar rute trenger hover-tilbakemelding. */
+.screen:hover .screenTitle {
+  color: var(--st-muted);
+}
+
+.screenDesc {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--st-muted);
+}
+
+/* ── Datamodell og blokker ──────────────────────────────────────────────── */
+.model {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 80px;
+}
+
+.modelIntro {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: var(--st-muted);
+}
+
+/* 1px gap over en linjefarget flate gir hårstreken mellom radene. */
+.hairline {
+  display: grid;
+  gap: 1px;
+  background: var(--st-line);
+  border: 1px solid var(--st-line);
+}
+
+.row {
+  background: var(--st-paper);
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.rowNarrow {
+  grid-template-columns: 140px minmax(0, 1fr);
+}
+
+.rowName {
+  font: 400 18px / 1.3 var(--st-heading);
+}
+
+.rowFields {
+  font-size: 14px;
+  color: var(--st-muted);
+}
+
+/* ── Neste steg ─────────────────────────────────────────────────────────── */
+.nextList {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+  max-width: 680px;
+}
+
+/* ── Smale skjermer ─────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .intro,
+  .model {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+
+  .intro {
+    padding: 48px 0;
+  }
+
+  .sectionSpaced {
+    margin-top: 56px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 24px 16px 64px;
+  }
+
+  .wordmark {
+    font-size: 40px;
+  }
+
+  .page .sectionTitle,
+  .page .sectionTitleTight {
+    font-size: 28px;
+  }
+
+  .actions > * {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .row,
+  .rowNarrow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}

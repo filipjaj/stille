@@ -1,0 +1,93 @@
+/*
+ * Stille designsystem — komponentlaget.
+ * Portert fra designprosjektets _ref/components/core/skin.js.
+ *
+ * Kun reglene flatene i repoet faktisk bruker er tatt med. Resten av skinnet
+ * (felter, dialoger, produktkort, antallsvelger) ligger i designprosjektet og
+ * hentes inn når milepæl 2 trenger dem — se
+ * docs/superpowers/specs/2026-09-05-nettbutikk-boilerplate-design.md
+ */
+
+.st-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+  color: currentColor;
+}
+
+.st-spin {
+  animation: st-spin 1s linear infinite;
+}
+
+.st-eyebrow {
+  display: block;
+  font: 12px / 1.5 var(--st-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.st-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border: 1px solid var(--st-charcoal);
+  border-radius: var(--st-radius);
+  background: var(--st-charcoal);
+  color: var(--st-paper);
+  font: 14px / 1.5 var(--st-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--st-duration) var(--st-ease),
+    color var(--st-duration) var(--st-ease);
+  box-sizing: border-box;
+}
+.st-button:hover {
+  background: var(--st-ink);
+  color: var(--st-paper);
+}
+.st-button.secondary {
+  background: transparent;
+  color: var(--st-ink);
+}
+.st-button.secondary:hover {
+  background: var(--st-ink);
+  color: var(--st-paper);
+}
+.st-button.compact {
+  padding: 8px 12px;
+  gap: 12px;
+}
+.st-button.full {
+  width: 100%;
+}
+.st-button:disabled,
+.st-button[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.st-button:disabled:hover {
+  background: var(--st-charcoal);
+}
+.st-button.secondary:disabled:hover {
+  background: transparent;
+  color: var(--st-ink);
+}
+
+.st-focusable:focus-visible,
+.st-button:focus-visible {
+  outline: 2px solid var(--st-control-focus);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px var(--st-paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-button,
+  .st-spin {
+    transition: none !important;
+    animation: none !important;
+  }
+}

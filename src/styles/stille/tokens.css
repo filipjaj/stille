@@ -1,0 +1,254 @@
+/*
+ * Stille designsystem — token-laget.
+ * Portert fra designprosjektet «Moderne nettbutikk-prosjekt»,
+ * _ds/stille-design-system-0d951ef0-37bf-4ccf-9d65-2cc4e382c638/tokens/*.css
+ *
+ * Endringer mot kilden:
+ * - @font-face peker på /fonts/ i public/ i stedet for designprosjektets assets/fonts/
+ * - base.css sine `body.st`-selektorer er skrevet om til `.st`, slik at systemet kan
+ *   slås på med et wrapper-element og ikke bare på <body>
+ */
+
+/* ── Fonter ─────────────────────────────────────────────────────────────── */
+/* Filene ligger ikke i repoet ennå; fallbacken under er Georgia/Helvetica. */
+@font-face {
+  font-family: 'Stille Serif';
+  src:
+    url('/fonts/StilleSerifPair-Regular.woff2') format('woff2'),
+    url('/fonts/StilleSerifPair-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Stille Serif';
+  src:
+    url('/fonts/StilleSerifPair-Italic.woff2') format('woff2'),
+    url('/fonts/StilleSerifPair-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Stille Sans';
+  src:
+    url('/fonts/StilleSansPair-Regular.woff2') format('woff2'),
+    url('/fonts/StilleSansPair-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Stille Sans';
+  src:
+    url('/fonts/StilleSansPair-Medium.woff2') format('woff2'),
+    url('/fonts/StilleSansPair-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Farger ─────────────────────────────────────────────────────────────── */
+:root {
+  --st-paper: #fffef2; /* Varm hovedflate */
+  --st-surface: #f5f3eb; /* Rolig sekundærflate */
+  --st-sand: #e9e3d3; /* Innfelt felt */
+  --st-ink: #2f2b23; /* Overskrifter og tekst */
+  --st-charcoal: #333333; /* Handlinger */
+  --st-muted: #666666; /* Sekundær tekst */
+  --st-line: #dad7ce; /* Skillelinjer */
+  --st-white: #ffffff; /* Lys kontrast */
+  --st-error: #8a352b; /* Feiltilstand */
+  --st-backdrop: rgb(47 43 35 / 0.6);
+
+  --st-bg-page: var(--st-paper);
+  --st-bg-surface: var(--st-surface);
+  --st-bg-inset: var(--st-sand);
+  --st-bg-inverse: var(--st-ink);
+  --st-text-primary: var(--st-ink);
+  --st-text-secondary: var(--st-muted);
+  --st-text-inverse: var(--st-paper);
+  --st-text-error: var(--st-error);
+  --st-border-subtle: var(--st-line);
+  --st-border-strong: var(--st-ink);
+  --st-action-bg: var(--st-charcoal);
+  --st-action-bg-hover: var(--st-ink);
+  --st-action-fg: var(--st-paper);
+  --st-control-border: var(--st-muted);
+  --st-control-focus: var(--st-ink);
+  --st-selection-bg: var(--st-ink);
+  --st-selection-fg: var(--st-paper);
+}
+
+/* ── Typografi ──────────────────────────────────────────────────────────── */
+:root {
+  --st-display: 'Stille Serif', Georgia, serif;
+  --st-heading: 'Stille Serif', Georgia, serif;
+  --st-italic: 'Stille Serif', Georgia, serif;
+  --st-body: 'Stille Sans', Helvetica, Arial, sans-serif;
+  --st-label: 'Stille Sans', Helvetica, Arial, sans-serif;
+  --st-weight-regular: 400;
+  --st-weight-medium: 500;
+
+  --st-text-caption: 12px;
+  --st-text-ui: 14px;
+  --st-text-body: 16px;
+  --st-text-lead: 24px;
+  --st-text-section: 36px;
+  --st-text-heading: 50px;
+  --st-text-display: 80px;
+  --st-text-display-fluid: clamp(42px, 5.5vw, 80px);
+  --st-text-wordmark: 56px;
+
+  --st-leading-display: 1.12;
+  --st-leading-heading: 1.2;
+  --st-leading-accordion: 1.3;
+  --st-leading-body: 1.6;
+  --st-leading-ui: 1.5;
+
+  --st-tracking-display: -0.025em;
+  --st-tracking-wordmark: -0.05em;
+  --st-tracking-eyebrow: 0.04em;
+
+  --st-font-display: 400 var(--st-text-display-fluid) / var(--st-leading-display) var(--st-display);
+  --st-font-h2: 400 var(--st-text-section) / var(--st-leading-display) var(--st-heading);
+  --st-font-h3: 400 var(--st-text-lead) / var(--st-leading-heading) var(--st-heading);
+  --st-font-body: 400 var(--st-text-body) / var(--st-leading-body) var(--st-body);
+  --st-font-ui: 400 var(--st-text-ui) / var(--st-leading-ui) var(--st-body);
+  --st-font-caption: 400 var(--st-text-caption) / var(--st-leading-ui) var(--st-body);
+  --st-font-eyebrow: 400 var(--st-text-caption) / var(--st-leading-ui) var(--st-label);
+  --st-font-quote: italic 400 var(--st-text-section) / var(--st-leading-accordion) var(--st-italic);
+}
+
+/* ── Rom ────────────────────────────────────────────────────────────────── */
+:root {
+  --st-space-4: 4px;
+  --st-space-8: 8px;
+  --st-space-12: 12px;
+  --st-space-16: 16px;
+  --st-space-24: 24px;
+  --st-space-32: 32px;
+  --st-space-40: 40px;
+  --st-space-64: 64px;
+  --st-space-80: 80px;
+  --st-space-120: 120px;
+
+  --st-gutter: 24px;
+  --st-margin: 40px;
+  --st-margin-mobile: 16px;
+  --st-page-max: 1440px;
+  --st-reading-max: 680px;
+  --st-columns: 12;
+  --st-columns-mobile: 4;
+
+  --st-control-height: 48px;
+  --st-control-pad-y: 12px;
+  --st-control-pad-x: 16px;
+  --st-icon-control: 22px;
+  --st-icon-display: 24px;
+  --st-hit-min: 44px;
+}
+
+/* ── Form og bevegelse ──────────────────────────────────────────────────── */
+:root {
+  --st-radius: 0;
+  --st-radius-round: 50%;
+  --st-border: 1px solid;
+  --st-shadow: none;
+  --st-focus-ring: 2px solid var(--st-ink);
+  --st-focus-offset: 4px;
+  --st-focus-halo: 0 0 0 2px var(--st-paper);
+  --st-duration: 300ms;
+  --st-duration-fast: 120ms;
+  --st-duration-icon: 160ms;
+  --st-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --st-disabled-opacity: 0.45;
+}
+
+@keyframes st-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Invertert tema ─────────────────────────────────────────────────────── */
+/* Blekkflate med papirtype. Slås på med data-theme="inverse" eller .st-inverse. */
+[data-theme='inverse'],
+.st-inverse {
+  --st-paper: #2f2b23;
+  --st-surface: #3a352c;
+  --st-sand: #453f35;
+  --st-ink: #fffef2;
+  --st-charcoal: #f5f3eb;
+  --st-muted: #b9b3a4;
+  --st-line: #4e483d;
+  --st-white: #2f2b23;
+  --st-error: #e5a899;
+  --st-backdrop: rgb(255 254 242 / 0.2);
+  color-scheme: dark;
+}
+
+/* ── Grunnflate ─────────────────────────────────────────────────────────── */
+/* Malen fra Payload setter html{background:#000}. Stille-flatene er papir. */
+html:has(.st) {
+  background: var(--st-paper);
+}
+
+.st {
+  background: var(--st-paper);
+  color: var(--st-ink);
+  font: var(--st-font-body);
+}
+/*
+ * :where() nuller spesifisiteten på lenke-resetten, slik at komponentklasser
+ * som .st-button vinner over den. Uten dette arver knappeteksten blekkfargen
+ * og forsvinner i kullflaten.
+ */
+:where(.st) :where(a) {
+  color: inherit;
+}
+:where(.st) :where(a:hover) {
+  color: var(--st-muted);
+}
+.st h1,
+.st h2,
+.st h3 {
+  font-weight: 400;
+  margin: 0;
+  font-family: var(--st-heading);
+  line-height: 1.12;
+}
+.st h1 {
+  font-size: var(--st-text-display-fluid);
+  letter-spacing: var(--st-tracking-display);
+}
+.st h2 {
+  font-size: 36px;
+}
+.st h3 {
+  font-size: 24px;
+}
+.st em {
+  font-family: var(--st-italic);
+  font-style: italic;
+}
+.st img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+.st :focus-visible {
+  outline: var(--st-focus-ring);
+  outline-offset: var(--st-focus-offset);
+  box-shadow: var(--st-focus-halo);
+}
