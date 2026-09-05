@@ -10,39 +10,33 @@
  */
 
 /* ── Fonter ─────────────────────────────────────────────────────────────── */
-/* Filene ligger ikke i repoet ennå; fallbacken under er Georgia/Helvetica. */
+/* Filene ligger i public/fonts/. Kun woff2 — designprosjektet har også ttf,
+   men ingen nettlesere som er i bruk trenger den. Faller tilbake på
+   Georgia/Helvetica hvis en fil skulle mangle. */
 @font-face {
   font-family: 'Stille Serif';
-  src:
-    url('/fonts/StilleSerifPair-Regular.woff2') format('woff2'),
-    url('/fonts/StilleSerifPair-Regular.ttf') format('truetype');
+  src: url('/fonts/StilleSerifPair-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Stille Serif';
-  src:
-    url('/fonts/StilleSerifPair-Italic.woff2') format('woff2'),
-    url('/fonts/StilleSerifPair-Italic.ttf') format('truetype');
+  src: url('/fonts/StilleSerifPair-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'Stille Sans';
-  src:
-    url('/fonts/StilleSansPair-Regular.woff2') format('woff2'),
-    url('/fonts/StilleSansPair-Regular.ttf') format('truetype');
+  src: url('/fonts/StilleSansPair-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Stille Sans';
-  src:
-    url('/fonts/StilleSansPair-Medium.woff2') format('woff2'),
-    url('/fonts/StilleSansPair-Medium.ttf') format('truetype');
+  src: url('/fonts/StilleSansPair-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
