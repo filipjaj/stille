@@ -5,7 +5,8 @@ import React from 'react'
 
 import { ProductCard } from '@/components/stille/ProductCard'
 import { formatOre } from '@/lib/format'
-import type { Category } from '@/payload-types'
+
+import { useSaved } from './useSaved'
 
 export type ProductCardAddProps = {
   id: number
@@ -19,11 +20,14 @@ export type ProductCardAddProps = {
 }
 
 /**
- * `ProductCard` med kurv-koblingen ferdig kablet: "Legg i kurven" kaller
- * `addItem` fra `useCart` og viser en kort bekreftelse i stedet for
- * standardteksten. Brukes på forsiden, i samlingen og på produktsiden — alle
- * tre trenger nøyaktig denne kombinasjonen, og bare denne biten av kortet
- * trenger å være klient.
+ * `ProductCard` med kurv og lagring ferdig kablet.
+ *
+ * "Legg i kurven" kaller `addItem` fra `useCart`. Hjertet skriver til
+ * `users.saved` og vises bare når noen er innlogget — et hjerte som stille
+ * ikke lagrer noe er verre enn ingen knapp.
+ *
+ * Brukes på forsiden, i samlingen og på produktsiden. Bare denne biten av
+ * kortet trenger å være klient.
  */
 export function ProductCardAdd({
   id,
@@ -35,6 +39,7 @@ export function ProductCardAdd({
   imageAlt,
 }: ProductCardAddProps) {
   const { addItem, isLoading } = useCart()
+  const { canSave, isSaved, toggle } = useSaved()
   const [added, setAdded] = React.useState(false)
 
   const handleAdd = async () => {
@@ -54,6 +59,9 @@ export function ProductCardAdd({
       showAdd
       onAdd={handleAdd}
       addLabel={isLoading ? 'Legger i kurven …' : added ? 'Lagt i kurven' : 'Legg i kurven'}
+      saveable={canSave}
+      saved={isSaved(id)}
+      onSaveChange={() => void toggle(id)}
     />
   )
 }

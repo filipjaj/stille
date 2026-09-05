@@ -9,6 +9,8 @@ import {
   isDocumentOwner,
 } from './access'
 import { productContentFields } from './fields/product'
+import { stripeAdapter } from '@/payments/stripe'
+
 import { NOK } from './currency'
 import { vatRateField } from './fields/vatRate'
 
@@ -29,8 +31,12 @@ export const ecommerce = ecommercePlugin({
     slug: 'users',
   },
   payments: {
-    // Adaptere kommer i milepæl 4a. Tom liste er en gyldig konfigurasjon.
-    paymentMethods: [],
+    paymentMethods: [
+      stripeAdapter({
+        secretKey: process.env.STRIPE_SECRET_KEY || '',
+        webhookSecret: process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
+      }),
+    ],
   },
   products: {
     productsCollectionOverride: ({ defaultCollection }) => ({
