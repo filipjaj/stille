@@ -27,6 +27,8 @@ Spike-koden er kastet og skal ikke inn i repoet.
 | Når API-kall fram? | Ja, 401 fra Stripe med ugyldig nøkkel | Transporten er ikke et problem |
 | Virker `webhooks.constructEvent()` (synkron)? | **Nei.** Kaster `SubtleCryptoProvider cannot be used in a synchronous context` | Blokkerer bruk av pluginens webhook-endepunkt |
 | Virker `webhooks.constructEventAsync()`? | Ja, verifiserer signaturen korrekt | Vår adapter må bruke denne |
+| Kan `vipps_preview=v1` sendes via `apiVersion`-strengen? | **Ja, mekanismen virker.** `2025-06-30.preview; vipps_preview=v1` avvises med `You do not have permission to pass this beta header` — en tilgangsfeil, ikke en syntaksfeil | Stripe som eneste PSP er gjennomførbart. Mangler kun innvilget tilgang |
+| Hvilke metoder gir en NOK-PaymentIntent i dag? | `card`, `klarna`, `link` | Brukbar fallback mens vi venter på Vipps |
 
 To funn fra kildekodelesing, ikke fra kjøring:
 
@@ -41,12 +43,17 @@ Vi lar transaksjoner være av. D1 har ingen interaktive transaksjoner, så å sl
 `transactionOptions` ville bytte en kjent begrensning mot en ukjent feilmodus.
 Konsistens løses med idempotens i stedet (avsnitt 6).
 
-**Fortsatt ubesvart, blokkert på Handoff-oppgave `task-2026-09-05-stripe-vipps-spike`:**
-kan `vipps_preview=v1` sendes med ved å hekte det på `apiVersion`-strengen?
+**Fortsatt ubesvart:** om Vipps faktisk dukker opp i `payment_method_types` når previewen er
+innvilget. Mekanismen er bevist, entitlementet ikke. Kjør spiken på nytt etter innvilgelse.
 
-Beslutningsregel: hvis ja og previewen innvilges, er Stripe eneste PSP.
-Hvis nei, eller previewen avslås, implementeres Vipps ePayment som en andre adapter bak samme
-grensesnitt (milepæl 4b). Ingenting i milepæl 1 avhenger av svaret.
+Beslutningsregel: innvilges previewen, er Stripe eneste PSP. Avslås den, implementeres
+Vipps ePayment som en andre adapter bak samme grensesnitt (milepæl 4b).
+Ingenting i milepæl 1 avhenger av svaret.
+
+**Konsekvens for adapteren:** vi pinner én `apiVersion`-konstant som brukes i `initiatePayment`,
+`confirmOrder` og webhook-endepunktet, og som preview-flagget hektes på når tilgangen er der.
+Pluginen defaulter til to *ulike* versjoner (`2025-06-30.preview` i `initiatePayment`,
+`2025-03-31.basil` i `webhooksEndpoint`), noe vi ikke viderefører.
 
 ## 3. Arkitektur
 
@@ -245,7 +252,8 @@ og den totalen finnes ikke før frakt og MVA er på plass.
 
 | Risiko | Håndtering |
 | --- | --- |
-| Vipps-preview innvilges ikke | Milepæl 4b. Grensesnittet er allerede satt, så kjernen røres ikke |
+| Vipps-preview innvilges ikke | Milepæl 4b. Grensesnittet er allerede satt, så kjernen røres ikke. Butikken er lanserbar med kort + Klarna i mellomtiden |
+| Preview-API-versjonen endres eller trekkes av Stripe | `apiVersion` er én konstant ett sted. Bytte er en enlinjes endring, ikke et søk gjennom adapteren |
 | `plugin-ecommerce` endrer datamodell mellom versjoner | Payload-versjonene pinnes eksakt. Oppgradering er en egen oppgave med diff |
 | Pluginens øvrige endepunkter har flere Workers-inkompatibiliteter | Milepæl 2 starter med å kjøre kurv-endepunktene i `wrangler dev`, ikke `next dev` |
 | D1-størrelsesgrenser ved stor katalog | Ikke et v1-problem. Noteres i README |
