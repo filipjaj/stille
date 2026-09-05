@@ -5,6 +5,8 @@ import Link from 'next/link'
 import React from 'react'
 
 import { Button } from '@/components/stille/Button'
+import { usePayments } from '@payloadcms/plugin-ecommerce/client/react'
+
 import { EmptyState } from '@/components/stille/EmptyState'
 import { Eyebrow } from '@/components/stille/Eyebrow'
 import { Field } from '@/components/stille/Field'
@@ -20,6 +22,7 @@ import {
   useCartLines,
   type RawCartItem,
 } from '../_shared/cart-lines'
+import { StripePayment } from './StripePayment'
 import styles from './kasse.module.css'
 
 type CheckoutViewProps = {
@@ -89,15 +92,48 @@ export function CheckoutView({
     label: PAYMENT_LABELS[method],
   }))
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const { initiatePayment } = usePayments()
+  const [intent, setIntent] = React.useState<{
+    clientSecret: string
+    paymentIntentID: string
+  } | null>(null)
+  const [starting, setStarting] = React.useState(false)
+
+  /**
+   * Steg 1 av betalingen: serveren regner ut beløpet, oppretter PaymentIntent
+   * og en transaksjon, og gir oss en client secret. Selve kortdialogen kommer
+   * i steg 2 (`StripePayment`) — vi ber aldri om kortdata selv.
+   */
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    // Betalingsadapteren (Stripe) kobles til i milepæl 4a, via
-    // usePayments().initiatePayment/confirmOrder. Fram til da finnes det
-    // ingen betaling å gjennomføre — vi later ikke som, og oppretter ingen
-    // ordre som «betalt».
-    setPaymentNotice(
-      `Betaling er ikke koblet til ennå. ${paymentMethod ? PAYMENT_LABELS[paymentMethod] + ' kobles' : 'Betalingsmetodene kobles'} på i milepæl 4a.`,
-    )
+    setPaymentNotice(null)
+    setStarting(true)
+
+    const form = new FormData(event.currentTarget)
+    const customerEmail = String(form.get('epost') ?? '')
+
+    try {
+      const result = (await initiatePayment('stripe', {
+        additionalData: { customerEmail },
+      })) as { clientSecret?: string; paymentIntentID?: string } | undefined
+
+      if (!result?.clientSecret || !result.paymentIntentID) {
+        throw new Error('Betalingen kunne ikke startes.')
+      }
+
+      setIntent({
+        clientSecret: result.clientSecret,
+        paymentIntentID: result.paymentIntentID,
+      })
+    } catch (error) {
+      setPaymentNotice(
+        error instanceof Error
+          ? error.message
+          : 'Betalingen kunne ikke startes. Prøv igjen, eller ta kontakt med oss.',
+      )
+    } finally {
+      setStarting(false)
+    }
   }
 
   return (
@@ -124,7 +160,7 @@ export function CheckoutView({
         </div>
       ) : (
         <div className={styles.layout}>
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form className={styles.form} onSubmit={(event) => void handleSubmit(event)}>
             <fieldset className={styles.fieldset}>
               <legend className={styles.legend}>
                 <span className={styles.legendNo}>01 / </span>Kontakt
@@ -191,16 +227,29 @@ export function CheckoutView({
               </p>
             </fieldset>
 
-            <div className={styles.submitBlock}>
-              <Button type="submit" fullWidth disabled={!paymentMethod}>
-                Betal {formatOre(totals.grandTotalGross)}
-              </Button>
-              {paymentNotice ? (
-                <p role="status" className={styles.paymentNotice}>
-                  {paymentNotice}
-                </p>
-              ) : null}
-            </div>
+            {intent ? (
+              <StripePayment
+                clientSecret={intent.clientSecret}
+                paymentIntentID={intent.paymentIntentID}
+                amount={totals.grandTotalGross}
+              />
+            ) : (
+              <div className={styles.submitBlock}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  loading={starting}
+                  disabled={!paymentMethod || starting}
+                >
+                  Betal {formatOre(totals.grandTotalGross)}
+                </Button>
+                {paymentNotice ? (
+                  <p role="alert" className={styles.paymentNotice}>
+                    {paymentNotice}
+                  </p>
+                ) : null}
+              </div>
+            )}
           </form>
 
           <div className={styles.summary}>
