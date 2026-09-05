@@ -1,0 +1,53 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--st-space-24);
+  margin-bottom: var(--st-space-32);
+}
+
+.header h2 {
+  margin: 0;
+}
+
+.list {
+  display: grid;
+  gap: var(--st-space-24);
+}
+
+.card {
+  border-top: 1px solid var(--st-line);
+  padding-top: var(--st-space-16);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--st-space-24);
+}
+
+.card address {
+  font-style: normal;
+  line-height: 1.6;
+}
+
+.form {
+  display: grid;
+  gap: var(--st-space-16);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--st-space-16);
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: var(--st-space-16);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--st-space-16);
+  margin-top: var(--st-space-8);
+}

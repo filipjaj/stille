@@ -1,0 +1,35 @@
+.tabs {
+  display: flex;
+  gap: var(--st-space-24);
+  margin-bottom: var(--st-space-32);
+  font: var(--st-font-ui);
+}
+
+.tab {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--st-muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: color var(--st-duration) var(--st-ease);
+}
+
+.tab.active {
+  color: var(--st-ink);
+  text-decoration-color: var(--st-ink);
+}
+
+.form {
+  display: grid;
+  gap: var(--st-space-24);
+}
+
+.error {
+  color: var(--st-error);
+  margin: 0;
+  font-size: var(--st-text-ui);
+}

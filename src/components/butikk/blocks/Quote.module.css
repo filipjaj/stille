@@ -1,0 +1,15 @@
+.quote {
+  font: italic 400 36px / 1.3 var(--st-italic);
+  margin: var(--st-space-80) auto;
+  padding-left: var(--st-space-32);
+  border-left: 1px solid var(--st-ink);
+  max-width: var(--st-reading-max);
+}
+
+.source {
+  display: block;
+  margin-top: var(--st-space-16);
+  font: var(--st-font-caption);
+  color: var(--st-muted);
+  font-style: normal;
+}

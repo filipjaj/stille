@@ -584,3 +584,9 @@ textarea.st-input {
   padding: 0;
   margin-left: -8px;
 }
+
+/* Produktkort uten bilde: samme flate og forhold som <img> ville hatt. */
+.st-product .st-product-placeholder {
+  aspect-ratio: 4 / 5;
+  margin-bottom: var(--st-space-24);
+}

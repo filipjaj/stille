@@ -1,0 +1,25 @@
+.section {
+  display: grid;
+  gap: var(--st-space-40);
+  max-width: 480px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--st-line);
+  padding-top: var(--st-space-16);
+}
+
+.row span:first-child {
+  color: var(--st-muted);
+}
+
+.form {
+  display: grid;
+  gap: var(--st-space-16);
+}
+
+.form h3 {
+  margin: 0;
+}

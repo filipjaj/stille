@@ -9,8 +9,7 @@
 
 const DESIGN_PROJECT = 'https://claude.ai/design/p/a1376a1c-dabf-4a68-8fbf-800599f9438e'
 
-const canvas = (file: string): string =>
-  `${DESIGN_PROJECT}?file=${encodeURIComponent(file)}`
+const canvas = (file: string): string => `${DESIGN_PROJECT}?file=${encodeURIComponent(file)}`
 
 const SHOP_MOBILE = canvas('Butikk mobil.dc.html')
 const SHOP_DESKTOP = canvas('Butikk desktop.dc.html')

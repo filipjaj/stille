@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import type { Payload } from 'payload'
 
+import type { Category } from '@/payload-types'
 import config from '@/payload.config'
 
 /**
@@ -30,4 +31,16 @@ export function linkHref(link: {
     return `/sider/${String((page as { slug: string }).slug)}`
   }
   return '#'
+}
+
+/**
+ * Tittelen på et produkts kategori, eller tom streng når relasjonen ikke er
+ * dypet opp.
+ *
+ * Ligger her og ikke i en komponentfil: den kalles fra serverkomponenter, og
+ * en ren hjelpefunksjon eksportert fra en `'use client'`-modul kan ikke kalles
+ * på serveren — Next kaster «Attempted to call ... from the server».
+ */
+export function categoryLabel(category: Category | null | number | undefined): string {
+  return category && typeof category === 'object' ? category.title : ''
 }

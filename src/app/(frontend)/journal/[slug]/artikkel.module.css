@@ -1,0 +1,161 @@
+/*
+ * Artikkel — lesekolonne, sitat, objekter fra fortellingen, flere
+ * fortellinger. Målene er lest ut av designprosjektets `Butikk desktop.dc.html`,
+ * data-screen-label="Artikkel", inkludert `--st-reading-max` for
+ * brødtekstkolonnen og sitatblokkens venstre strek.
+ */
+
+.page {
+  padding-top: 40px;
+}
+
+.hero {
+  padding: 24px 0 48px;
+  max-width: 900px;
+}
+
+.title {
+  font: 400 clamp(42px, 5.5vw, 80px) / 1.12 var(--st-heading);
+  letter-spacing: -0.025em;
+  margin: 20px 0 0;
+}
+
+.byline {
+  margin: 16px 0 0;
+  color: var(--st-muted);
+  font-size: 14px;
+}
+
+.figure {
+  margin: 0;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  max-height: 640px;
+  object-fit: cover;
+}
+
+.figure figcaption {
+  font: 12px / 1.5 var(--st-body);
+  color: var(--st-muted);
+  margin-top: 16px;
+}
+
+/* ── Brødtekst ─────────────────────────────────────────────────────────── */
+.body {
+  max-width: var(--st-reading-max);
+  margin: 64px auto;
+  display: grid;
+  gap: 24px;
+}
+
+.body p {
+  margin: 0;
+}
+
+.body p:first-of-type {
+  font-size: 24px;
+}
+
+.body blockquote {
+  font: var(--st-font-quote);
+  margin: 24px 0;
+  padding-left: 32px;
+  border-left: 1px solid var(--st-ink);
+}
+
+.body img {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  object-fit: cover;
+}
+
+/* ── Objekter fra fortellingen ─────────────────────────────────────────── */
+.objects {
+  border-top: 1px solid var(--st-line);
+  padding-top: 24px;
+}
+
+.objects h2 {
+  font: 400 36px / 1.12 var(--st-heading);
+  margin: 0 0 40px;
+}
+
+.objectsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+/* ── Flere fortellinger ────────────────────────────────────────────────── */
+.more {
+  border-top: 1px solid var(--st-line);
+  margin-top: 80px;
+  padding-top: 24px;
+}
+
+.moreHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 40px;
+}
+
+.moreHeader h2 {
+  font: 400 36px / 1.12 var(--st-heading);
+  margin: 0;
+}
+
+.moreGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.moreCard {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.moreCard img {
+  display: block;
+  width: 200px;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.moreCard h3 {
+  font: 400 24px / 1.2 var(--st-heading);
+  margin: 8px 0 0;
+}
+
+@media (max-width: 900px) {
+  .objectsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .moreGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .objectsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .moreCard {
+    grid-template-columns: 120px minmax(0, 1fr);
+  }
+
+  .moreCard img {
+    width: 120px;
+  }
+}

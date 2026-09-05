@@ -6,8 +6,12 @@ import { Icon } from './Icon'
 import { TextLink } from './TextLink'
 
 export type ProductCardProps = {
-  /** Bildeadresse. */
-  image: string
+  /**
+   * Bildeadresse. Utelates den — eller er den tom — rendres designsystemets
+   * sandflate i stedet, som er nøyaktig bakgrunnen lerretene viser bak
+   * produktbildene. Et produkt uten bilde skal se bevisst ut, ikke brukket.
+   */
+  image?: string
   /** Alt-tekst for bildet. */
   alt?: string
   /** Produkttittel. */
@@ -60,7 +64,11 @@ export function ProductCard({
   return (
     <article className={['st-product', className].filter(Boolean).join(' ')} style={style}>
       <a href={href}>
-        <img src={image} alt={alt} />
+        {image ? (
+          <img src={image} alt={alt} />
+        ) : (
+          <span className="st-media st-product-placeholder" role="presentation" />
+        )}
         <h3>{title}</h3>
       </a>
       {saveable && (

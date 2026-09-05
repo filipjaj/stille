@@ -1,0 +1,25 @@
+.page {
+  display: grid;
+  grid-template-columns: var(--st-sidebar-width) minmax(0, 1fr);
+  gap: var(--st-space-80);
+  padding: var(--st-space-64) 0;
+}
+
+.page :global(.st-sidebar) {
+  position: static;
+  width: 100%;
+  border-right: 1px solid var(--st-line);
+  padding-right: var(--st-space-24);
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+  .page :global(.st-sidebar) {
+    border-right: 0;
+    border-bottom: 1px solid var(--st-line);
+    padding-right: 0;
+    padding-bottom: var(--st-space-16);
+  }
+}

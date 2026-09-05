@@ -17,9 +17,7 @@ export default function OversiktPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <span className={styles.wordmark}>stille</span>
-        <span className={styles.meta}>
-          Nettbutikk + Payload CMS · prototype v1 · 5. sep 2026
-        </span>
+        <span className={styles.meta}>Nettbutikk + Payload CMS · prototype v1 · 5. sep 2026</span>
       </header>
 
       <section className={styles.intro}>

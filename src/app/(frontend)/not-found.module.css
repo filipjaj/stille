@@ -1,0 +1,41 @@
+.page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--st-space-80);
+  align-items: center;
+  padding: var(--st-space-64) 0;
+}
+
+.big {
+  font: 400 clamp(96px, 14vw, 200px) / 0.95 var(--st-heading);
+  letter-spacing: -0.04em;
+  margin: var(--st-space-16) 0 0;
+}
+
+.lede {
+  margin: var(--st-space-24) 0 0;
+}
+
+.text {
+  margin: var(--st-space-16) 0 var(--st-space-32);
+  max-width: 44ch;
+}
+
+.actions {
+  display: flex;
+  gap: var(--st-space-24);
+  flex-wrap: wrap;
+}
+
+.image {
+  width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+}

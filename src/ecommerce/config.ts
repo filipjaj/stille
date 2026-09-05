@@ -1,5 +1,4 @@
 import { ecommercePlugin } from '@payloadcms/plugin-ecommerce'
-import type { Currency } from '@payloadcms/plugin-ecommerce/types'
 
 import {
   adminOnlyFieldAccess,
@@ -10,16 +9,8 @@ import {
   isDocumentOwner,
 } from './access'
 import { productContentFields } from './fields/product'
+import { NOK } from './currency'
 import { vatRateField } from './fields/vatRate'
-
-/** Norske kroner. `decimals: 2` gjør at plugin-en lagrer priser i øre. */
-export const NOK: Currency = {
-  code: 'NOK',
-  decimals: 2,
-  label: 'Norske kroner',
-  symbol: 'kr',
-  symbolDisplay: 'symbol',
-}
 
 export const ecommerce = ecommercePlugin({
   access: {
@@ -53,3 +44,5 @@ export const ecommerce = ecommercePlugin({
     }),
   },
 })
+
+export { NOK }

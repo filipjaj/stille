@@ -3,7 +3,7 @@
 import { EcommerceProvider } from '@payloadcms/plugin-ecommerce/client/react'
 import React from 'react'
 
-import { NOK } from '@/ecommerce/config'
+import { NOK } from '@/ecommerce/currency'
 
 /**
  * Kurv-, adresse- og betalingskonteksten fra `plugin-ecommerce`.

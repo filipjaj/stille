@@ -1,0 +1,107 @@
+/*
+ * Samling / lookbook — bildeserie med produktkort under hvert bilde.
+ * Målene er lest ut av designprosjektets `Butikk desktop.dc.html`,
+ * data-screen-label="Samling": 29/39 på bildene, 80px kolonnegap, og
+ * produktgriden forskjøvet 120px ned mot bildets billedtekst.
+ */
+
+.page {
+  padding-top: 40px;
+}
+
+.hero {
+  padding: 24px 0 48px;
+  max-width: 900px;
+}
+
+.title {
+  font: 400 clamp(42px, 5.5vw, 80px) / 1.12 var(--st-heading);
+  letter-spacing: -0.025em;
+  margin: 20px 0 0;
+}
+
+.lede {
+  margin: 16px 0 0;
+  max-width: 54ch;
+}
+
+.empty {
+  margin-top: 48px;
+}
+
+/* ── Looks ─────────────────────────────────────────────────────────────── */
+.looks {
+  display: grid;
+  gap: 80px;
+}
+
+.look {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Annenhver look bytter side, slik lerretet veksler bilde/produkter. */
+.reversed .figure {
+  order: 2;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 29 / 39;
+  object-fit: cover;
+}
+
+.caption {
+  font: 12px / 1.5 var(--st-body);
+  color: var(--st-muted);
+  margin: 12px 0 0;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  padding-top: 120px;
+}
+
+.cta {
+  margin-top: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.cta > * {
+  min-width: 240px;
+}
+
+.quote {
+  font: var(--st-font-quote);
+  margin: 0 auto;
+  padding-left: 32px;
+  border-left: 1px solid var(--st-ink);
+  max-width: var(--st-reading-max);
+}
+
+@media (max-width: 900px) {
+  .look {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .reversed .figure {
+    order: 0;
+  }
+
+  .products {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .products {
+    grid-template-columns: 1fr;
+  }
+}

@@ -18,6 +18,7 @@ import { Faqs } from './collections/Faqs'
 import { Lookbooks } from './collections/Lookbooks'
 import { Pages } from './collections/Pages'
 import { Footer } from './globals/Footer'
+import { Frontpage } from './globals/Frontpage'
 import { Header } from './globals/Header'
 import { Newsletter } from './globals/Newsletter'
 import { Shop } from './globals/Shop'
@@ -88,7 +89,7 @@ export default buildConfig({
     Faqs,
     Pages,
   ],
-  globals: [Header, Footer, Newsletter, Shop],
+  globals: [Header, Footer, Frontpage, Newsletter, Shop],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

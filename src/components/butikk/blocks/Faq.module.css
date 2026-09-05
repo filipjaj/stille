@@ -1,0 +1,19 @@
+.section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--st-space-80);
+  border-top: 1px solid var(--st-line);
+  padding-top: var(--st-space-24);
+  align-items: start;
+  margin: var(--st-space-80) 0;
+}
+
+.section h2 {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}

@@ -45,6 +45,14 @@ export const productContentFields: Field[] = [
     },
   },
   {
+    name: 'care',
+    type: 'textarea',
+    label: 'Materiale og pleie',
+    admin: {
+      description: 'Vises som eget panel på produktsiden, sammen med levering og retur.',
+    },
+  },
+  {
     name: 'images',
     type: 'array',
     label: 'Bilder',

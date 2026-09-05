@@ -10,7 +10,7 @@
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "OrderStatus".
  */
-export type OrderStatus = ('processing' | 'completed' | 'cancelled' | 'refunded') | null;
+export type OrderStatus = ('processing' | 'completed' | 'cancelled' | 'refunded') | null
 /**
  * Supported timezones in IANA format.
  *
@@ -64,167 +64,170 @@ export type SupportedTimezones =
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
   | 'Pacific/Auckland'
-  | 'Pacific/Fiji';
+  | 'Pacific/Fiji'
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
-  };
-  blocks: {};
+    users: UserAuthOperations
+  }
+  blocks: {}
   collections: {
-    users: User;
-    media: Media;
-    'webhook-events': WebhookEvent;
-    categories: Category;
-    lookbooks: Lookbook;
-    articles: Article;
-    faqs: Faq;
-    pages: Page;
-    addresses: Address;
-    variants: Variant;
-    variantTypes: VariantType;
-    variantOptions: VariantOption;
-    products: Product;
-    carts: Cart;
-    orders: Order;
-    transactions: Transaction;
-    'payload-kv': PayloadKv;
-    'payload-locked-documents': PayloadLockedDocument;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
-  };
+    users: User
+    media: Media
+    'webhook-events': WebhookEvent
+    categories: Category
+    lookbooks: Lookbook
+    articles: Article
+    faqs: Faq
+    pages: Page
+    addresses: Address
+    variants: Variant
+    variantTypes: VariantType
+    variantOptions: VariantOption
+    products: Product
+    carts: Cart
+    orders: Order
+    transactions: Transaction
+    'payload-kv': PayloadKv
+    'payload-locked-documents': PayloadLockedDocument
+    'payload-preferences': PayloadPreference
+    'payload-migrations': PayloadMigration
+  }
   collectionsJoins: {
     variantTypes: {
-      options: 'variantOptions';
-    };
+      options: 'variantOptions'
+    }
     products: {
-      variants: 'variants';
-    };
-  };
+      variants: 'variants'
+    }
+  }
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
-    'webhook-events': WebhookEventsSelect<false> | WebhookEventsSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    lookbooks: LookbooksSelect<false> | LookbooksSelect<true>;
-    articles: ArticlesSelect<false> | ArticlesSelect<true>;
-    faqs: FaqsSelect<false> | FaqsSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
-    addresses: AddressesSelect<false> | AddressesSelect<true>;
-    variants: VariantsSelect<false> | VariantsSelect<true>;
-    variantTypes: VariantTypesSelect<false> | VariantTypesSelect<true>;
-    variantOptions: VariantOptionsSelect<false> | VariantOptionsSelect<true>;
-    products: ProductsSelect<false> | ProductsSelect<true>;
-    carts: CartsSelect<false> | CartsSelect<true>;
-    orders: OrdersSelect<false> | OrdersSelect<true>;
-    transactions: TransactionsSelect<false> | TransactionsSelect<true>;
-    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
-    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
-  };
+    users: UsersSelect<false> | UsersSelect<true>
+    media: MediaSelect<false> | MediaSelect<true>
+    'webhook-events': WebhookEventsSelect<false> | WebhookEventsSelect<true>
+    categories: CategoriesSelect<false> | CategoriesSelect<true>
+    lookbooks: LookbooksSelect<false> | LookbooksSelect<true>
+    articles: ArticlesSelect<false> | ArticlesSelect<true>
+    faqs: FaqsSelect<false> | FaqsSelect<true>
+    pages: PagesSelect<false> | PagesSelect<true>
+    addresses: AddressesSelect<false> | AddressesSelect<true>
+    variants: VariantsSelect<false> | VariantsSelect<true>
+    variantTypes: VariantTypesSelect<false> | VariantTypesSelect<true>
+    variantOptions: VariantOptionsSelect<false> | VariantOptionsSelect<true>
+    products: ProductsSelect<false> | ProductsSelect<true>
+    carts: CartsSelect<false> | CartsSelect<true>
+    orders: OrdersSelect<false> | OrdersSelect<true>
+    transactions: TransactionsSelect<false> | TransactionsSelect<true>
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>
+    'payload-locked-documents':
+      PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>
+  }
   db: {
-    defaultIDType: number;
-  };
-  fallbackLocale: null;
+    defaultIDType: number
+  }
+  fallbackLocale: null
   globals: {
-    header: Header;
-    footer: Footer;
-    newsletter: Newsletter;
-    shop: Shop;
-  };
+    header: Header
+    footer: Footer
+    frontpage: Frontpage
+    newsletter: Newsletter
+    shop: Shop
+  }
   globalsSelect: {
-    header: HeaderSelect<false> | HeaderSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
-    newsletter: NewsletterSelect<false> | NewsletterSelect<true>;
-    shop: ShopSelect<false> | ShopSelect<true>;
-  };
-  locale: null;
+    header: HeaderSelect<false> | HeaderSelect<true>
+    footer: FooterSelect<false> | FooterSelect<true>
+    frontpage: FrontpageSelect<false> | FrontpageSelect<true>
+    newsletter: NewsletterSelect<false> | NewsletterSelect<true>
+    shop: ShopSelect<false> | ShopSelect<true>
+  }
+  locale: null
   widgets: {
-    collections: CollectionsWidget;
-  };
-  user: User;
+    collections: CollectionsWidget
+  }
+  user: User
   jobs: {
-    tasks: unknown;
-    workflows: unknown;
-  };
+    tasks: unknown
+    workflows: unknown
+  }
   /**
    * Generated by the Payload Ecommerce plugin
    */
   ecommerce: {
     collections: {
-      addresses: Address;
-      carts: Cart;
-      customers?: User;
-      orders: Order;
-      products: Product;
-      transactions: Transaction;
-      variantOptions: VariantOption;
-      variants: Variant;
-      variantTypes: VariantType;
-    };
-  };
+      addresses: Address
+      carts: Cart
+      customers?: User
+      orders: Order
+      products: Product
+      transactions: Transaction
+      variantOptions: VariantOption
+      variants: Variant
+      variantTypes: VariantType
+    }
+  }
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   login: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   registerFirstUser: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   unlock: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
-  roles: ('admin' | 'customer')[];
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
+  id: number
+  roles: ('admin' | 'customer')[]
+  updatedAt: string
+  createdAt: string
+  email: string
+  resetPasswordToken?: string | null
+  resetPasswordExpiration?: string | null
+  salt?: string | null
+  hash?: string | null
+  loginAttempts?: number | null
+  lockUntil?: string | null
   sessions?:
     | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
+        id: string
+        createdAt?: string | null
+        expiresAt: string
       }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
+    | null
+  password?: string | null
+  collection: 'users'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
+  id: number
+  alt: string
+  updatedAt: string
+  createdAt: string
+  url?: string | null
+  thumbnailURL?: string | null
+  filename?: string | null
+  mimeType?: string | null
+  filesize?: number | null
+  width?: number | null
+  height?: number | null
 }
 /**
  * Behandlede webhook-hendelser. Slettes ikke automatisk — se milepæl 7 for opprydding.
@@ -233,252 +236,256 @@ export interface Media {
  * via the `definition` "webhook-events".
  */
 export interface WebhookEvent {
-  id: number;
+  id: number
   /**
    * Hendelses-ID fra betalingsleverandøren, for eksempel evt_123.
    */
-  eventId: string;
+  eventId: string
   /**
    * Navnet på betalingsadapteren, for eksempel stripe.
    */
-  provider: string;
-  type: string;
-  processedAt: string;
-  updatedAt: string;
-  createdAt: string;
+  provider: string
+  type: string
+  processedAt: string
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
-  id: number;
-  title: string;
-  slug: string;
-  intro?: string | null;
-  image?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
+  id: number
+  title: string
+  slug: string
+  intro?: string | null
+  image?: (number | null) | Media
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "lookbooks".
  */
 export interface Lookbook {
-  id: number;
-  title: string;
-  slug: string;
+  id: number
+  title: string
+  slug: string
   /**
    * F.eks. "Høst 2026".
    */
-  season?: string | null;
-  intro?: string | null;
+  season?: string | null
+  intro?: string | null
   looks?:
     | {
-        image: number | Media;
-        caption?: string | null;
-        products?: (number | Product)[] | null;
-        id?: string | null;
+        image: number | Media
+        caption?: string | null
+        products?: (number | Product)[] | null
+        id?: string | null
       }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
 export interface Product {
-  id: number;
-  inventory?: number | null;
-  enableVariants?: boolean | null;
-  variantTypes?: (number | VariantType)[] | null;
+  id: number
+  inventory?: number | null
+  enableVariants?: boolean | null
+  variantTypes?: (number | VariantType)[] | null
   variants?: {
-    docs?: (number | Variant)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  priceInNOKEnabled?: boolean | null;
-  priceInNOK?: number | null;
-  title: string;
+    docs?: (number | Variant)[]
+    hasNextPage?: boolean
+    totalDocs?: number
+  }
+  priceInNOKEnabled?: boolean | null
+  priceInNOK?: number | null
+  title: string
   /**
    * Brukes i URL-en: /produkt/<slug>
    */
-  slug: string;
-  sku: string;
+  slug: string
+  sku: string
   /**
    * Vises på produktkortet og øverst på produktsiden.
    */
-  description?: string | null;
+  description?: string | null
+  /**
+   * Vises som eget panel på produktsiden, sammen med levering og retur.
+   */
+  care?: string | null
   /**
    * 4:5, minst 1600 px. Første bilde vises på produktkortet.
    */
   images?:
     | {
-        image: number | Media;
-        id?: string | null;
+        image: number | Media
+        id?: string | null
       }[]
-    | null;
-  category?: (number | null) | Category;
-  lookbook?: (number | null) | Lookbook;
+    | null
+  category?: (number | null) | Category
+  lookbook?: (number | null) | Lookbook
   /**
    * Heltall i øre, som prisen. Tomt hvis produktet ikke er nedsatt.
    */
-  compareAt?: number | null;
+  compareAt?: number | null
   /**
    * Kommaseparert, for eksempel «keramikk, lin, stilleben».
    */
-  tags?: string | null;
+  tags?: string | null
   /**
    * Overstyrer tittel, beskrivelse og delingsbilde for søkemotorer og sosiale medier. Stå tomt for å bruke innholdet på siden.
    */
   seo?: {
-    title?: string | null;
-    description?: string | null;
+    title?: string | null
+    description?: string | null
     /**
      * Vises når siden deles i sosiale medier (Open Graph).
      */
-    image?: (number | null) | Media;
-  };
-  vatRate: '25' | '15' | '12' | '0';
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
+    image?: (number | null) | Media
+  }
+  vatRate: '25' | '15' | '12' | '0'
+  updatedAt: string
+  createdAt: string
+  deletedAt?: string | null
+  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variantTypes".
  */
 export interface VariantType {
-  id: number;
-  label: string;
-  name: string;
+  id: number
+  label: string
+  name: string
   options?: {
-    docs?: (number | VariantOption)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
+    docs?: (number | VariantOption)[]
+    hasNextPage?: boolean
+    totalDocs?: number
+  }
+  updatedAt: string
+  createdAt: string
+  deletedAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variantOptions".
  */
 export interface VariantOption {
-  id: number;
-  _variantOptions_options_order?: string | null;
-  variantType: number | VariantType;
-  label: string;
+  id: number
+  _variantOptions_options_order?: string | null
+  variantType: number | VariantType
+  label: string
   /**
    * should be defaulted or dynamic based on label
    */
-  value: string;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
+  value: string
+  updatedAt: string
+  createdAt: string
+  deletedAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants".
  */
 export interface Variant {
-  id: number;
+  id: number
   /**
    * Used for administrative purposes, not shown to customers. This is populated by default.
    */
-  title?: string | null;
-  product: number | Product;
-  options: (number | VariantOption)[];
-  inventory?: number | null;
-  priceInNOKEnabled?: boolean | null;
-  priceInNOK?: number | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
+  title?: string | null
+  product: number | Product
+  options: (number | VariantOption)[]
+  inventory?: number | null
+  priceInNOKEnabled?: boolean | null
+  priceInNOK?: number | null
+  updatedAt: string
+  createdAt: string
+  deletedAt?: string | null
+  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles".
  */
 export interface Article {
-  id: number;
-  title: string;
-  slug: string;
-  lead?: string | null;
-  category: 'rom' | 'materialer' | 'mennesker';
-  author?: (number | null) | User;
-  readingTime?: number | null;
+  id: number
+  title: string
+  slug: string
+  lead?: string | null
+  category: 'rom' | 'materialer' | 'mennesker'
+  author?: (number | null) | User
+  readingTime?: number | null
   hero: {
-    image: number | Media;
-    caption?: string | null;
+    image: number | Media
+    caption?: string | null
     /**
      * Overstyrer alt-teksten som ligger på selve mediefilen, for denne artikkelen spesifikt.
      */
-    alt?: string | null;
-  };
+    alt?: string | null
+  }
   body?: {
     root: {
-      type: string;
+      type: string
       children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  products?: (number | Product)[] | null;
+        type: any
+        version: number
+        [k: string]: unknown
+      }[]
+      direction: ('ltr' | 'rtl') | null
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
+      indent: number
+      version: number
+    }
+    [k: string]: unknown
+  } | null
+  products?: (number | Product)[] | null
   /**
    * Fremhevede artikler kan plukkes ut spesielt i forsideoppsett.
    */
-  featured?: boolean | null;
-  publishedAt?: string | null;
+  featured?: boolean | null
+  publishedAt?: string | null
   /**
    * Overstyrer tittel, beskrivelse og delingsbilde for søkemotorer og sosiale medier. Stå tomt for å bruke innholdet på siden.
    */
   seo?: {
-    title?: string | null;
-    description?: string | null;
+    title?: string | null
+    description?: string | null
     /**
      * Vises når siden deles i sosiale medier (Open Graph).
      */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
+    image?: (number | null) | Media
+  }
+  updatedAt: string
+  createdAt: string
+  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs".
  */
 export interface Faq {
-  id: number;
-  question: string;
-  answer: string;
+  id: number
+  question: string
+  answer: string
   /**
    * Lavest tall vises først.
    */
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
+  order?: number | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
-  id: number;
-  title: string;
-  slug: string;
+  id: number
+  title: string
+  slug: string
   layout?:
     | (
         | HeroBlock
@@ -491,22 +498,22 @@ export interface Page {
         | NewsletterBlock
         | ArticleTeaserBlock
       )[]
-    | null;
-  navPlacement?: ('none' | 'header' | 'footer' | 'both') | null;
+    | null
+  navPlacement?: ('none' | 'header' | 'footer' | 'both') | null
   /**
    * Overstyrer tittel, beskrivelse og delingsbilde for søkemotorer og sosiale medier. Stå tomt for å bruke innholdet på siden.
    */
   seo?: {
-    title?: string | null;
-    description?: string | null;
+    title?: string | null
+    description?: string | null
     /**
      * Vises når siden deles i sosiale medier (Open Graph).
      */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
+    image?: (number | null) | Media
+  }
+  updatedAt: string
+  createdAt: string
+  _status?: ('draft' | 'published') | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -516,15 +523,15 @@ export interface HeroBlock {
   /**
    * Kort tekst over hovedtittelen, f.eks. en kategori eller kampanjenavn.
    */
-  eyebrow?: string | null;
-  title: string;
+  eyebrow?: string | null
+  title: string
   /**
    * Anbefalt bildeforhold 3:2.
    */
-  image: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'hero';
+  image: number | Media
+  id?: string | null
+  blockName?: string | null
+  blockType: 'hero'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -534,24 +541,24 @@ export interface ProductsBlock {
   /**
    * Valgfri overskrift for seksjonen.
    */
-  title?: string | null;
-  source: 'manual' | 'category' | 'collection';
+  title?: string | null
+  source: 'manual' | 'category' | 'collection'
   /**
    * Vises kun når kilde er "Kategori".
    */
-  category?: (number | null) | Category;
+  category?: (number | null) | Category
   /**
    * Vises kun når kilde er "Lookbook".
    */
-  collection?: (number | null) | Lookbook;
+  collection?: (number | null) | Lookbook
   /**
    * Vises kun når kilde er "Manuelt utvalg".
    */
-  products?: (number | Product)[] | null;
-  limit?: number | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'products';
+  products?: (number | Product)[] | null
+  limit?: number | null
+  id?: string | null
+  blockName?: string | null
+  blockType: 'products'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -560,22 +567,22 @@ export interface ProductsBlock {
 export interface RichTextBlock {
   body: {
     root: {
-      type: string;
+      type: string
       children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'richText';
+        type: any
+        version: number
+        [k: string]: unknown
+      }[]
+      direction: ('ltr' | 'rtl') | null
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
+      indent: number
+      version: number
+    }
+    [k: string]: unknown
+  }
+  id?: string | null
+  blockName?: string | null
+  blockType: 'richText'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -585,28 +592,28 @@ export interface ImageTextBlock {
   /**
    * Anbefalt bildeforhold 4:5.
    */
-  image: number | Media;
-  eyebrow?: string | null;
-  title?: string | null;
-  body?: string | null;
-  imageSide: 'left' | 'right';
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'imageText';
+  image: number | Media
+  eyebrow?: string | null
+  title?: string | null
+  body?: string | null
+  imageSide: 'left' | 'right'
+  id?: string | null
+  blockName?: string | null
+  blockType: 'imageText'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "QuoteBlock".
  */
 export interface QuoteBlock {
-  quote: string;
+  quote: string
   /**
    * Hvem sitatet er hentet fra, f.eks. navn og tittel.
    */
-  source?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'quote';
+  source?: string | null
+  id?: string | null
+  blockName?: string | null
+  blockType: 'quote'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -615,68 +622,68 @@ export interface QuoteBlock {
 export interface GalleryBlock {
   images?:
     | {
-        image: number | Media;
-        caption?: string | null;
-        id?: string | null;
+        image: number | Media
+        caption?: string | null
+        id?: string | null
       }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'gallery';
+    | null
+  id?: string | null
+  blockName?: string | null
+  blockType: 'gallery'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FaqBlock".
  */
 export interface FaqBlock {
-  title?: string | null;
-  faqs: (number | Faq)[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'faq';
+  title?: string | null
+  faqs: (number | Faq)[]
+  id?: string | null
+  blockName?: string | null
+  blockType: 'faq'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "NewsletterBlock".
  */
 export interface NewsletterBlock {
-  eyebrow?: string | null;
-  title: string;
-  buttonLabel: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'newsletter';
+  eyebrow?: string | null
+  title: string
+  buttonLabel: string
+  id?: string | null
+  blockName?: string | null
+  blockType: 'newsletter'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ArticleTeaserBlock".
  */
 export interface ArticleTeaserBlock {
-  source: 'latest' | 'pick';
+  source: 'latest' | 'pick'
   /**
    * Vises kun når kilde er "Valgt artikkel".
    */
-  article?: (number | null) | Article;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'articleTeaser';
+  article?: (number | null) | Article
+  id?: string | null
+  blockName?: string | null
+  blockType: 'articleTeaser'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "addresses".
  */
 export interface Address {
-  id: number;
-  customer?: (number | null) | User;
-  title?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
-  company?: string | null;
-  addressLine1?: string | null;
-  addressLine2?: string | null;
-  city?: string | null;
-  state?: string | null;
-  postalCode?: string | null;
+  id: number
+  customer?: (number | null) | User
+  title?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  company?: string | null
+  addressLine1?: string | null
+  addressLine2?: string | null
+  city?: string | null
+  state?: string | null
+  postalCode?: string | null
   country:
     | 'US'
     | 'GB'
@@ -717,452 +724,452 @@ export interface Address {
     | 'SI'
     | 'ES'
     | 'SE'
-    | 'CH';
-  phone?: string | null;
-  updatedAt: string;
-  createdAt: string;
+    | 'CH'
+  phone?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "carts".
  */
 export interface Cart {
-  id: number;
+  id: number
   items?:
     | {
-        product?: (number | null) | Product;
-        variant?: (number | null) | Variant;
-        quantity: number;
-        id?: string | null;
+        product?: (number | null) | Product
+        variant?: (number | null) | Variant
+        quantity: number
+        id?: string | null
       }[]
-    | null;
-  secret?: string | null;
-  customer?: (number | null) | User;
-  purchasedAt?: string | null;
-  status?: ('active' | 'purchased' | 'abandoned') | null;
-  subtotal?: number | null;
-  currency?: 'NOK' | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  secret?: string | null
+  customer?: (number | null) | User
+  purchasedAt?: string | null
+  status?: ('active' | 'purchased' | 'abandoned') | null
+  subtotal?: number | null
+  currency?: 'NOK' | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
-  id: number;
+  id: number
   items?:
     | {
-        product?: (number | null) | Product;
-        variant?: (number | null) | Variant;
-        quantity: number;
-        id?: string | null;
+        product?: (number | null) | Product
+        variant?: (number | null) | Variant
+        quantity: number
+        id?: string | null
       }[]
-    | null;
+    | null
   shippingAddress?: {
-    title?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    company?: string | null;
-    addressLine1?: string | null;
-    addressLine2?: string | null;
-    city?: string | null;
-    state?: string | null;
-    postalCode?: string | null;
-    country?: string | null;
-    phone?: string | null;
-  };
-  customer?: (number | null) | User;
-  customerEmail?: string | null;
-  transactions?: (number | Transaction)[] | null;
-  status?: OrderStatus;
-  amount?: number | null;
-  currency?: 'NOK' | null;
-  updatedAt: string;
-  createdAt: string;
+    title?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    company?: string | null
+    addressLine1?: string | null
+    addressLine2?: string | null
+    city?: string | null
+    state?: string | null
+    postalCode?: string | null
+    country?: string | null
+    phone?: string | null
+  }
+  customer?: (number | null) | User
+  customerEmail?: string | null
+  transactions?: (number | Transaction)[] | null
+  status?: OrderStatus
+  amount?: number | null
+  currency?: 'NOK' | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "transactions".
  */
 export interface Transaction {
-  id: number;
+  id: number
   items?:
     | {
-        product?: (number | null) | Product;
-        variant?: (number | null) | Variant;
-        quantity: number;
-        id?: string | null;
+        product?: (number | null) | Product
+        variant?: (number | null) | Variant
+        quantity: number
+        id?: string | null
       }[]
-    | null;
+    | null
   billingAddress?: {
-    title?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-    company?: string | null;
-    addressLine1?: string | null;
-    addressLine2?: string | null;
-    city?: string | null;
-    state?: string | null;
-    postalCode?: string | null;
-    country?: string | null;
-    phone?: string | null;
-  };
-  status: 'pending' | 'succeeded' | 'failed' | 'cancelled' | 'expired' | 'refunded';
-  customer?: (number | null) | User;
-  customerEmail?: string | null;
-  order?: (number | null) | Order;
-  cart?: (number | null) | Cart;
-  amount?: number | null;
-  currency?: 'NOK' | null;
-  updatedAt: string;
-  createdAt: string;
+    title?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    company?: string | null
+    addressLine1?: string | null
+    addressLine2?: string | null
+    city?: string | null
+    state?: string | null
+    postalCode?: string | null
+    country?: string | null
+    phone?: string | null
+  }
+  status: 'pending' | 'succeeded' | 'failed' | 'cancelled' | 'expired' | 'refunded'
+  customer?: (number | null) | User
+  customerEmail?: string | null
+  order?: (number | null) | Order
+  cart?: (number | null) | Cart
+  amount?: number | null
+  currency?: 'NOK' | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
-  key: string;
+  id: number
+  key: string
   data:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
+    | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: number
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'users'
+        value: number | User
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
+        relationTo: 'media'
+        value: number | Media
       } | null)
     | ({
-        relationTo: 'webhook-events';
-        value: number | WebhookEvent;
+        relationTo: 'webhook-events'
+        value: number | WebhookEvent
       } | null)
     | ({
-        relationTo: 'categories';
-        value: number | Category;
+        relationTo: 'categories'
+        value: number | Category
       } | null)
     | ({
-        relationTo: 'lookbooks';
-        value: number | Lookbook;
+        relationTo: 'lookbooks'
+        value: number | Lookbook
       } | null)
     | ({
-        relationTo: 'articles';
-        value: number | Article;
+        relationTo: 'articles'
+        value: number | Article
       } | null)
     | ({
-        relationTo: 'faqs';
-        value: number | Faq;
+        relationTo: 'faqs'
+        value: number | Faq
       } | null)
     | ({
-        relationTo: 'pages';
-        value: number | Page;
+        relationTo: 'pages'
+        value: number | Page
       } | null)
     | ({
-        relationTo: 'addresses';
-        value: number | Address;
+        relationTo: 'addresses'
+        value: number | Address
       } | null)
     | ({
-        relationTo: 'variants';
-        value: number | Variant;
+        relationTo: 'variants'
+        value: number | Variant
       } | null)
     | ({
-        relationTo: 'variantTypes';
-        value: number | VariantType;
+        relationTo: 'variantTypes'
+        value: number | VariantType
       } | null)
     | ({
-        relationTo: 'variantOptions';
-        value: number | VariantOption;
+        relationTo: 'variantOptions'
+        value: number | VariantOption
       } | null)
     | ({
-        relationTo: 'products';
-        value: number | Product;
+        relationTo: 'products'
+        value: number | Product
       } | null)
     | ({
-        relationTo: 'carts';
-        value: number | Cart;
+        relationTo: 'carts'
+        value: number | Cart
       } | null)
     | ({
-        relationTo: 'orders';
-        value: number | Order;
+        relationTo: 'orders'
+        value: number | Order
       } | null)
     | ({
-        relationTo: 'transactions';
-        value: number | Transaction;
-      } | null);
-  globalSlug?: string | null;
+        relationTo: 'transactions'
+        value: number | Transaction
+      } | null)
+  globalSlug?: string | null
   user: {
-    relationTo: 'users';
-    value: number | User;
-  };
-  updatedAt: string;
-  createdAt: string;
+    relationTo: 'users'
+    value: number | User
+  }
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: number
   user: {
-    relationTo: 'users';
-    value: number | User;
-  };
-  key?: string | null;
+    relationTo: 'users'
+    value: number | User
+  }
+  key?: string | null
   value?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
-  name?: string | null;
-  batch?: number | null;
-  updatedAt: string;
-  createdAt: string;
+  id: number
+  name?: string | null
+  batch?: number | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  roles?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
+  roles?: T
+  updatedAt?: T
+  createdAt?: T
+  email?: T
+  resetPasswordToken?: T
+  resetPasswordExpiration?: T
+  salt?: T
+  hash?: T
+  loginAttempts?: T
+  lockUntil?: T
   sessions?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+        id?: T
+        createdAt?: T
+        expiresAt?: T
+      }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
+  alt?: T
+  updatedAt?: T
+  createdAt?: T
+  url?: T
+  thumbnailURL?: T
+  filename?: T
+  mimeType?: T
+  filesize?: T
+  width?: T
+  height?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "webhook-events_select".
  */
 export interface WebhookEventsSelect<T extends boolean = true> {
-  eventId?: T;
-  provider?: T;
-  type?: T;
-  processedAt?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  eventId?: T
+  provider?: T
+  type?: T
+  processedAt?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  intro?: T;
-  image?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  title?: T
+  slug?: T
+  intro?: T
+  image?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "lookbooks_select".
  */
 export interface LookbooksSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  season?: T;
-  intro?: T;
+  title?: T
+  slug?: T
+  season?: T
+  intro?: T
   looks?:
     | T
     | {
-        image?: T;
-        caption?: T;
-        products?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
+        image?: T
+        caption?: T
+        products?: T
+        id?: T
+      }
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  lead?: T;
-  category?: T;
-  author?: T;
-  readingTime?: T;
+  title?: T
+  slug?: T
+  lead?: T
+  category?: T
+  author?: T
+  readingTime?: T
   hero?:
     | T
     | {
-        image?: T;
-        caption?: T;
-        alt?: T;
-      };
-  body?: T;
-  products?: T;
-  featured?: T;
-  publishedAt?: T;
+        image?: T
+        caption?: T
+        alt?: T
+      }
+  body?: T
+  products?: T
+  featured?: T
+  publishedAt?: T
   seo?:
     | T
     | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
+        title?: T
+        description?: T
+        image?: T
+      }
+  updatedAt?: T
+  createdAt?: T
+  _status?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs_select".
  */
 export interface FaqsSelect<T extends boolean = true> {
-  question?: T;
-  answer?: T;
-  order?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  question?: T
+  answer?: T
+  order?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
+  title?: T
+  slug?: T
   layout?:
     | T
     | {
-        hero?: T | HeroBlockSelect<T>;
-        products?: T | ProductsBlockSelect<T>;
-        richText?: T | RichTextBlockSelect<T>;
-        imageText?: T | ImageTextBlockSelect<T>;
-        quote?: T | QuoteBlockSelect<T>;
-        gallery?: T | GalleryBlockSelect<T>;
-        faq?: T | FaqBlockSelect<T>;
-        newsletter?: T | NewsletterBlockSelect<T>;
-        articleTeaser?: T | ArticleTeaserBlockSelect<T>;
-      };
-  navPlacement?: T;
+        hero?: T | HeroBlockSelect<T>
+        products?: T | ProductsBlockSelect<T>
+        richText?: T | RichTextBlockSelect<T>
+        imageText?: T | ImageTextBlockSelect<T>
+        quote?: T | QuoteBlockSelect<T>
+        gallery?: T | GalleryBlockSelect<T>
+        faq?: T | FaqBlockSelect<T>
+        newsletter?: T | NewsletterBlockSelect<T>
+        articleTeaser?: T | ArticleTeaserBlockSelect<T>
+      }
+  navPlacement?: T
   seo?:
     | T
     | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
+        title?: T
+        description?: T
+        image?: T
+      }
+  updatedAt?: T
+  createdAt?: T
+  _status?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "HeroBlock_select".
  */
 export interface HeroBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  image?: T;
-  id?: T;
-  blockName?: T;
+  eyebrow?: T
+  title?: T
+  image?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ProductsBlock_select".
  */
 export interface ProductsBlockSelect<T extends boolean = true> {
-  title?: T;
-  source?: T;
-  category?: T;
-  collection?: T;
-  products?: T;
-  limit?: T;
-  id?: T;
-  blockName?: T;
+  title?: T
+  source?: T
+  category?: T
+  collection?: T
+  products?: T
+  limit?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RichTextBlock_select".
  */
 export interface RichTextBlockSelect<T extends boolean = true> {
-  body?: T;
-  id?: T;
-  blockName?: T;
+  body?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ImageTextBlock_select".
  */
 export interface ImageTextBlockSelect<T extends boolean = true> {
-  image?: T;
-  eyebrow?: T;
-  title?: T;
-  body?: T;
-  imageSide?: T;
-  id?: T;
-  blockName?: T;
+  image?: T
+  eyebrow?: T
+  title?: T
+  body?: T
+  imageSide?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "QuoteBlock_select".
  */
 export interface QuoteBlockSelect<T extends boolean = true> {
-  quote?: T;
-  source?: T;
-  id?: T;
-  blockName?: T;
+  quote?: T
+  source?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1172,142 +1179,143 @@ export interface GalleryBlockSelect<T extends boolean = true> {
   images?:
     | T
     | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
+        image?: T
+        caption?: T
+        id?: T
+      }
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FaqBlock_select".
  */
 export interface FaqBlockSelect<T extends boolean = true> {
-  title?: T;
-  faqs?: T;
-  id?: T;
-  blockName?: T;
+  title?: T
+  faqs?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "NewsletterBlock_select".
  */
 export interface NewsletterBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  buttonLabel?: T;
-  id?: T;
-  blockName?: T;
+  eyebrow?: T
+  title?: T
+  buttonLabel?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ArticleTeaserBlock_select".
  */
 export interface ArticleTeaserBlockSelect<T extends boolean = true> {
-  source?: T;
-  article?: T;
-  id?: T;
-  blockName?: T;
+  source?: T
+  article?: T
+  id?: T
+  blockName?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "addresses_select".
  */
 export interface AddressesSelect<T extends boolean = true> {
-  customer?: T;
-  title?: T;
-  firstName?: T;
-  lastName?: T;
-  company?: T;
-  addressLine1?: T;
-  addressLine2?: T;
-  city?: T;
-  state?: T;
-  postalCode?: T;
-  country?: T;
-  phone?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  customer?: T
+  title?: T
+  firstName?: T
+  lastName?: T
+  company?: T
+  addressLine1?: T
+  addressLine2?: T
+  city?: T
+  state?: T
+  postalCode?: T
+  country?: T
+  phone?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variants_select".
  */
 export interface VariantsSelect<T extends boolean = true> {
-  title?: T;
-  product?: T;
-  options?: T;
-  inventory?: T;
-  priceInNOKEnabled?: T;
-  priceInNOK?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-  _status?: T;
+  title?: T
+  product?: T
+  options?: T
+  inventory?: T
+  priceInNOKEnabled?: T
+  priceInNOK?: T
+  updatedAt?: T
+  createdAt?: T
+  deletedAt?: T
+  _status?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variantTypes_select".
  */
 export interface VariantTypesSelect<T extends boolean = true> {
-  label?: T;
-  name?: T;
-  options?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
+  label?: T
+  name?: T
+  options?: T
+  updatedAt?: T
+  createdAt?: T
+  deletedAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "variantOptions_select".
  */
 export interface VariantOptionsSelect<T extends boolean = true> {
-  _variantOptions_options_order?: T;
-  variantType?: T;
-  label?: T;
-  value?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
+  _variantOptions_options_order?: T
+  variantType?: T
+  label?: T
+  value?: T
+  updatedAt?: T
+  createdAt?: T
+  deletedAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
-  inventory?: T;
-  enableVariants?: T;
-  variantTypes?: T;
-  variants?: T;
-  priceInNOKEnabled?: T;
-  priceInNOK?: T;
-  title?: T;
-  slug?: T;
-  sku?: T;
-  description?: T;
+  inventory?: T
+  enableVariants?: T
+  variantTypes?: T
+  variants?: T
+  priceInNOKEnabled?: T
+  priceInNOK?: T
+  title?: T
+  slug?: T
+  sku?: T
+  description?: T
+  care?: T
   images?:
     | T
     | {
-        image?: T;
-        id?: T;
-      };
-  category?: T;
-  lookbook?: T;
-  compareAt?: T;
-  tags?: T;
+        image?: T
+        id?: T
+      }
+  category?: T
+  lookbook?: T
+  compareAt?: T
+  tags?: T
   seo?:
     | T
     | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  vatRate?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  deletedAt?: T;
-  _status?: T;
+        title?: T
+        description?: T
+        image?: T
+      }
+  vatRate?: T
+  updatedAt?: T
+  createdAt?: T
+  deletedAt?: T
+  _status?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1317,19 +1325,19 @@ export interface CartsSelect<T extends boolean = true> {
   items?:
     | T
     | {
-        product?: T;
-        variant?: T;
-        quantity?: T;
-        id?: T;
-      };
-  secret?: T;
-  customer?: T;
-  purchasedAt?: T;
-  status?: T;
-  subtotal?: T;
-  currency?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        product?: T
+        variant?: T
+        quantity?: T
+        id?: T
+      }
+  secret?: T
+  customer?: T
+  purchasedAt?: T
+  status?: T
+  subtotal?: T
+  currency?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1339,34 +1347,34 @@ export interface OrdersSelect<T extends boolean = true> {
   items?:
     | T
     | {
-        product?: T;
-        variant?: T;
-        quantity?: T;
-        id?: T;
-      };
+        product?: T
+        variant?: T
+        quantity?: T
+        id?: T
+      }
   shippingAddress?:
     | T
     | {
-        title?: T;
-        firstName?: T;
-        lastName?: T;
-        company?: T;
-        addressLine1?: T;
-        addressLine2?: T;
-        city?: T;
-        state?: T;
-        postalCode?: T;
-        country?: T;
-        phone?: T;
-      };
-  customer?: T;
-  customerEmail?: T;
-  transactions?: T;
-  status?: T;
-  amount?: T;
-  currency?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        title?: T
+        firstName?: T
+        lastName?: T
+        company?: T
+        addressLine1?: T
+        addressLine2?: T
+        city?: T
+        state?: T
+        postalCode?: T
+        country?: T
+        phone?: T
+      }
+  customer?: T
+  customerEmail?: T
+  transactions?: T
+  status?: T
+  amount?: T
+  currency?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1376,142 +1384,165 @@ export interface TransactionsSelect<T extends boolean = true> {
   items?:
     | T
     | {
-        product?: T;
-        variant?: T;
-        quantity?: T;
-        id?: T;
-      };
+        product?: T
+        variant?: T
+        quantity?: T
+        id?: T
+      }
   billingAddress?:
     | T
     | {
-        title?: T;
-        firstName?: T;
-        lastName?: T;
-        company?: T;
-        addressLine1?: T;
-        addressLine2?: T;
-        city?: T;
-        state?: T;
-        postalCode?: T;
-        country?: T;
-        phone?: T;
-      };
-  status?: T;
-  customer?: T;
-  customerEmail?: T;
-  order?: T;
-  cart?: T;
-  amount?: T;
-  currency?: T;
-  updatedAt?: T;
-  createdAt?: T;
+        title?: T
+        firstName?: T
+        lastName?: T
+        company?: T
+        addressLine1?: T
+        addressLine2?: T
+        city?: T
+        state?: T
+        postalCode?: T
+        country?: T
+        phone?: T
+      }
+  status?: T
+  customer?: T
+  customerEmail?: T
+  order?: T
+  cart?: T
+  amount?: T
+  currency?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
-  key?: T;
-  data?: T;
+  key?: T
+  data?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-  document?: T;
-  globalSlug?: T;
-  user?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  document?: T
+  globalSlug?: T
+  user?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T;
-  key?: T;
-  value?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  user?: T
+  key?: T
+  value?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T;
-  batch?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  batch?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
 export interface Header {
-  id: number;
+  id: number
   nav?:
     | {
-        label: string;
-        type: 'internal' | 'external';
-        page?: (number | null) | Page;
-        url?: string | null;
-        id?: string | null;
+        label: string
+        type: 'internal' | 'external'
+        page?: (number | null) | Page
+        url?: string | null
+        id?: string | null
       }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+    | null
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */
 export interface Footer {
-  id: number;
+  id: number
   links?:
     | {
-        label: string;
-        type: 'internal' | 'external';
-        page?: (number | null) | Page;
-        url?: string | null;
-        id?: string | null;
+        label: string
+        type: 'internal' | 'external'
+        page?: (number | null) | Page
+        url?: string | null
+        id?: string | null
       }[]
-    | null;
-  text?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+    | null
+  text?: string | null
+  updatedAt?: string | null
+  createdAt?: string | null
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "frontpage".
+ */
+export interface Frontpage {
+  id: number
+  /**
+   * Liten versal over overskriften, f.eks. «Samling / 01».
+   */
+  eyebrow?: string | null
+  /**
+   * Første linje, i vanlig snitt.
+   */
+  title: string
+  /**
+   * Andre linje, settes i kursiv serif. La stå tom for én linje.
+   */
+  titleItalic?: string | null
+  lead?: string | null
+  image?: (number | null) | Media
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "newsletter".
  */
 export interface Newsletter {
-  id: number;
-  eyebrow?: string | null;
-  title: string;
-  buttonLabel: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  id: number
+  eyebrow?: string | null
+  title: string
+  buttonLabel: string
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shop".
  */
 export interface Shop {
-  id: number;
+  id: number
   /**
    * Standard fraktkostnad i øre, f.eks. 9900 for 99 kroner.
    */
-  shippingCost: number;
+  shippingCost: number
   /**
    * Ordreverdi (i øre) som gir gratis frakt. Stå tomt for å aldri gi fri frakt.
    */
-  freeShippingThreshold?: number | null;
-  paymentMethods: ('vipps' | 'card' | 'klarna')[];
-  updatedAt?: string | null;
-  createdAt?: string | null;
+  freeShippingThreshold?: number | null
+  paymentMethods: ('vipps' | 'card' | 'klarna')[]
+  updatedAt?: string | null
+  createdAt?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1521,15 +1552,15 @@ export interface HeaderSelect<T extends boolean = true> {
   nav?:
     | T
     | {
-        label?: T;
-        type?: T;
-        page?: T;
-        url?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+        label?: T
+        type?: T
+        page?: T
+        url?: T
+        id?: T
+      }
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1539,40 +1570,54 @@ export interface FooterSelect<T extends boolean = true> {
   links?:
     | T
     | {
-        label?: T;
-        type?: T;
-        page?: T;
-        url?: T;
-        id?: T;
-      };
-  text?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+        label?: T
+        type?: T
+        page?: T
+        url?: T
+        id?: T
+      }
+  text?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "frontpage_select".
+ */
+export interface FrontpageSelect<T extends boolean = true> {
+  eyebrow?: T
+  title?: T
+  titleItalic?: T
+  lead?: T
+  image?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "newsletter_select".
  */
 export interface NewsletterSelect<T extends boolean = true> {
-  eyebrow?: T;
-  title?: T;
-  buttonLabel?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  eyebrow?: T
+  title?: T
+  buttonLabel?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shop_select".
  */
 export interface ShopSelect<T extends boolean = true> {
-  shippingCost?: T;
-  freeShippingThreshold?: T;
-  paymentMethods?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+  shippingCost?: T
+  freeShippingThreshold?: T
+  paymentMethods?: T
+  updatedAt?: T
+  createdAt?: T
+  globalType?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1580,18 +1625,17 @@ export interface ShopSelect<T extends boolean = true> {
  */
 export interface CollectionsWidget {
   data?: {
-    [k: string]: unknown;
-  };
-  width: 'full';
+    [k: string]: unknown
+  }
+  width: 'full'
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-  [k: string]: unknown;
+  [k: string]: unknown
 }
-
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}

@@ -96,7 +96,8 @@ export const Articles: CollectionConfig = {
           type: 'text',
           label: 'Alt-tekst',
           admin: {
-            description: 'Overstyrer alt-teksten som ligger på selve mediefilen, for denne artikkelen spesifikt.',
+            description:
+              'Overstyrer alt-teksten som ligger på selve mediefilen, for denne artikkelen spesifikt.',
           },
         },
       ],

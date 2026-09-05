@@ -1,0 +1,49 @@
+/*
+ * Bekreftelse, portert fra designprosjektets `Butikk desktop.dc.html`,
+ * data-screen-label="Bekreftelse". Lerretet setter max-width:680px på hele
+ * skjermen — resten er lest ut av inline-stilene.
+ */
+
+.page {
+  padding-top: 64px;
+  max-width: 680px;
+}
+
+.hero {
+  padding: 0 0 40px;
+}
+
+.title {
+  font: 400 clamp(42px, 5.5vw, 80px) / 1.12 var(--st-heading);
+  letter-spacing: -0.025em;
+  margin: 20px 0 0;
+}
+
+.title em {
+  font-family: var(--st-italic);
+  font-style: normal;
+}
+
+.lede {
+  margin: 24px 0 0;
+}
+
+.summary {
+  background: var(--st-surface);
+  padding: 32px;
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,171 @@
+/*
+ * Checkout, portert fra designprosjektets `Butikk desktop.dc.html`,
+ * data-screen-label="Checkout". Målene er lest ut av lerretets inline-stiler.
+ * Media queries er implementasjonens ansvar — lerretet er en fast
+ * 1440px-artboard.
+ */
+
+.page {
+  padding-top: 64px;
+}
+
+.hero {
+  padding: 0 0 40px;
+  max-width: 900px;
+}
+
+.title {
+  font: 400 clamp(42px, 5.5vw, 80px) / 1.12 var(--st-heading);
+  letter-spacing: -0.025em;
+  margin: 20px 0 0;
+}
+
+.title em {
+  font-family: var(--st-italic);
+  font-style: normal;
+}
+
+.status {
+  color: var(--st-muted);
+}
+
+.emptyWrap {
+  max-width: 680px;
+}
+
+.emptyLink {
+  color: var(--st-ink);
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.form {
+  display: grid;
+  gap: 64px;
+}
+
+.fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.legend {
+  font: 400 36px / 1.12 var(--st-heading);
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.legendNo {
+  color: var(--st-muted);
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.fieldRowNarrow {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 24px;
+}
+
+.radioBlock {
+  margin-top: 16px;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--st-muted);
+  margin: 12px 0 0;
+}
+
+.submitBlock {
+  max-width: 360px;
+  display: grid;
+  gap: 12px;
+}
+
+.paymentNotice {
+  margin: 0;
+  font-size: 13px;
+  color: var(--st-muted);
+}
+
+/* ── Oppsummering ──────────────────────────────────────────────────────── */
+.summary {
+  background: var(--st-surface);
+  padding: 32px;
+  display: grid;
+  gap: 12px;
+  font-size: 14px;
+  position: sticky;
+  top: 40px;
+}
+
+.summaryTitle {
+  font: 400 24px / 1.2 var(--st-heading);
+  margin: 0 0 12px;
+}
+
+.summaryLine {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.summaryImage {
+  display: block;
+  width: 56px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.summaryVariant {
+  color: var(--st-muted);
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--st-line);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  font: 400 24px / 1.2 var(--st-heading);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .summary {
+    position: static;
+  }
+
+  .fieldRow,
+  .fieldRowNarrow {
+    grid-template-columns: 1fr;
+  }
+
+  .submitBlock {
+    max-width: none;
+  }
+}

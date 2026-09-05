@@ -1,0 +1,30 @@
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 70vh;
+  gap: var(--st-space-80);
+  align-items: center;
+  padding: var(--st-space-64) 0;
+}
+
+.image {
+  height: 100%;
+  min-height: 480px;
+}
+
+.panel {
+  max-width: 420px;
+}
+
+.panel h1 {
+  margin: var(--st-space-16) 0 var(--st-space-32);
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+  .image {
+    min-height: 320px;
+  }
+}

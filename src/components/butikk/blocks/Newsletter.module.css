@@ -1,0 +1,33 @@
+.section {
+  background: var(--st-surface);
+  padding: var(--st-space-40);
+  margin: var(--st-space-80) 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--st-space-80);
+  align-items: end;
+}
+
+.section h2 {
+  margin: var(--st-space-8) 0 0;
+}
+
+.form {
+  display: flex;
+  gap: var(--st-space-16);
+  align-items: end;
+}
+
+.field {
+  flex: 1;
+}
+
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

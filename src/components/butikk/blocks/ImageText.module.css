@@ -1,0 +1,25 @@
+.section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--st-space-80);
+  margin: var(--st-space-80) 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.body {
+  max-width: 40ch;
+  margin: var(--st-space-16) 0 0;
+}
+
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}

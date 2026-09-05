@@ -1,0 +1,10 @@
+.wrap {
+  max-width: var(--st-reading-max);
+  margin: var(--st-space-64) auto;
+  display: grid;
+  gap: var(--st-space-24);
+}
+
+.wrap :global(p) {
+  margin: 0;
+}

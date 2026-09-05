@@ -1,0 +1,114 @@
+/*
+ * Forsiden. Mål og avstander lest ut av «Butikk desktop.dc.html»
+ * (data-screen-label="Forside"). Lerretet er et fast 1440px-artboard —
+ * brekkpunktet under 900px er implementasjonens eget valg, i tråd med
+ * bruddet shop.css allerede bruker for skallet.
+ */
+
+.hero {
+  padding: 64px 0 48px;
+  max-width: 900px;
+}
+
+.title {
+  font: var(--st-font-display);
+  letter-spacing: var(--st-tracking-display);
+  margin: 20px 0 0;
+}
+
+.italic {
+  font-family: var(--st-italic);
+}
+
+.leadHero {
+  margin: 16px 0 0;
+  max-width: 54ch;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 580px;
+  object-fit: cover;
+}
+
+.h2 {
+  font: var(--st-font-h2);
+  margin: 8px 0 0;
+}
+
+.lookbookIntro {
+  margin: 16px 0 24px;
+  max-width: 30ch;
+}
+
+.sectionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--st-line);
+  margin-top: 80px;
+  padding: 24px 0 40px;
+  gap: 20px;
+}
+
+.sectionHead h2 {
+  font: var(--st-font-h2);
+  margin: 0;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.journalGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 80px;
+  margin: 80px 0 0;
+}
+
+.journalImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.journalLead {
+  margin: 16px 0 24px;
+  max-width: 40ch;
+}
+
+@media (max-width: 900px) {
+  .heroGrid,
+  .journalGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .heroImage {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .grid3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+}

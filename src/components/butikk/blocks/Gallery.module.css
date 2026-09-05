@@ -1,0 +1,26 @@
+.grid {
+  display: grid;
+  gap: var(--st-space-32);
+  margin: var(--st-space-80) 0;
+}
+
+.item img,
+.placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
+.caption {
+  display: block;
+  margin-top: var(--st-space-12);
+  font: var(--st-font-caption);
+  color: var(--st-muted);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,0 +1,29 @@
+.section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--st-space-64);
+  align-items: center;
+  margin: var(--st-space-80) 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 580px;
+  object-fit: cover;
+}
+
+.body p {
+  margin: var(--st-space-16) 0 var(--st-space-24);
+  max-width: 30ch;
+}
+
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+  .image {
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+}

@@ -1,0 +1,84 @@
+/*
+ * Samlingen (katalog). Mål lest ut av «Butikk desktop.dc.html»
+ * (data-screen-label="Kategori").
+ */
+
+.hero {
+  padding: 64px 0 40px;
+  max-width: 900px;
+}
+
+.title {
+  font: var(--st-font-display);
+  letter-spacing: var(--st-tracking-display);
+  margin: 20px 0 0;
+}
+
+.italic {
+  font-family: var(--st-italic);
+}
+
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  border-top: 1px solid var(--st-line);
+  border-bottom: 1px solid var(--st-line);
+  padding: 12px 0;
+  font: var(--st-font-ui);
+}
+
+.tabs {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  color: var(--st-muted);
+  text-decoration: none;
+}
+
+.tabActive {
+  color: var(--st-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.right {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.count {
+  color: var(--st-muted);
+  white-space: nowrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 64px 32px;
+  padding-top: 40px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 24px;
+  }
+
+  .bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
