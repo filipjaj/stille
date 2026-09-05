@@ -1,0 +1,605 @@
+/*
+ * Stille designsystem — admin-laget.
+ * Portert ordrett fra designprosjektets _ref/components/admin/adminSkin.js.
+ *
+ * Forutsetter tokens.css (statusfargene og --st-sidebar-width kommer derfra)
+ * og components.css (fokusringer og knapper).
+ */
+
+/* ── Tabell ─────────────────────────────────────────────────────────────── */
+.st-table-wrap {
+  border-top: 1px solid var(--st-line);
+  font: 14px / 1.5 var(--st-body);
+  color: var(--st-ink);
+  overflow-x: auto;
+}
+.st-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.st-table th,
+.st-table td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--st-line);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.st-table th:first-child,
+.st-table td:first-child {
+  padding-left: 0;
+}
+.st-table th:last-child,
+.st-table td:last-child {
+  padding-right: 0;
+}
+.st-table th {
+  font: 12px / 1.5 var(--st-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--st-muted);
+  font-weight: 400;
+}
+.st-table th button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.st-table th button:hover,
+.st-table th[aria-sort] button {
+  color: var(--st-ink);
+}
+.st-table th .st-icon {
+  transition: transform 160ms;
+}
+.st-table th[aria-sort='ascending'] .st-icon {
+  transform: rotate(180deg);
+}
+.st-table td.num,
+.st-table th.num {
+  text-align: right;
+}
+.st-table td.num {
+  font-variant-numeric: tabular-nums;
+}
+.st-table tbody tr {
+  transition: background var(--st-duration) var(--st-ease);
+}
+.st-table tbody tr.clickable {
+  cursor: pointer;
+}
+.st-table tbody tr.clickable:hover {
+  background: var(--st-surface);
+}
+.st-table tbody tr[aria-selected='true'] {
+  background: var(--st-surface);
+}
+.st-table .st-check-label {
+  gap: 0;
+}
+.st-table td.sel,
+.st-table th.sel {
+  width: 18px;
+  padding-right: 8px;
+}
+.st-table td.primary {
+  color: var(--st-ink);
+}
+.st-table td {
+  color: var(--st-ink);
+}
+.st-table td.muted {
+  color: var(--st-muted);
+}
+.st-table-empty {
+  padding: 64px 24px;
+  text-align: center;
+  border-bottom: 1px solid var(--st-line);
+}
+
+/* ── Merkelapp ──────────────────────────────────────────────────────────── */
+.st-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 12px / 1.5 var(--st-body);
+  padding: 2px 8px;
+  border: 1px solid var(--st-line);
+  color: var(--st-ink);
+  white-space: nowrap;
+}
+.st-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--st-muted);
+}
+.st-badge.success {
+  background: var(--st-success-bg);
+  border-color: transparent;
+  color: var(--st-success);
+}
+.st-badge.success::before {
+  background: var(--st-success);
+}
+.st-badge.warning {
+  background: var(--st-warning-bg);
+  border-color: transparent;
+  color: var(--st-warning);
+}
+.st-badge.warning::before {
+  background: var(--st-warning);
+}
+.st-badge.error {
+  background: var(--st-error-bg);
+  border-color: transparent;
+  color: var(--st-error);
+}
+.st-badge.error::before {
+  background: var(--st-error);
+}
+.st-badge.info {
+  background: var(--st-info-bg);
+  border-color: transparent;
+  color: var(--st-info);
+}
+.st-badge.info::before {
+  background: var(--st-info);
+}
+.st-badge.ink {
+  background: var(--st-ink);
+  border-color: var(--st-ink);
+  color: var(--st-paper);
+}
+.st-badge.ink::before {
+  display: none;
+}
+.st-badge.plain::before {
+  display: none;
+}
+
+/* ── Nøkkeltall ─────────────────────────────────────────────────────────── */
+.st-stat {
+  border-top: 1px solid var(--st-ink);
+  padding: 16px 0 0;
+  font: 14px / 1.5 var(--st-body);
+  color: var(--st-ink);
+  min-width: 0;
+}
+.st-stat-label {
+  display: block;
+  font: 12px / 1.5 var(--st-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--st-muted);
+}
+.st-stat-value {
+  display: block;
+  font: 400 36px / 1.1 var(--st-heading);
+  letter-spacing: -0.02em;
+  margin: 12px 0 8px;
+  font-variant-numeric: tabular-nums;
+}
+.st-stat-delta {
+  display: inline-flex;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--st-muted);
+}
+.st-stat-delta b {
+  font-weight: 400;
+  color: var(--st-ink);
+}
+.st-stat-delta.up b {
+  color: var(--st-success);
+}
+.st-stat-delta.down b {
+  color: var(--st-error);
+}
+
+/* ── Sidemeny ───────────────────────────────────────────────────────────── */
+.st-sidebar {
+  width: var(--st-sidebar-width);
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: var(--st-surface);
+  color: var(--st-ink);
+  border-right: 1px solid var(--st-line);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font: 14px / 1.5 var(--st-body);
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  overflow: auto;
+}
+.st-sidebar-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0 4px;
+}
+.st-sidebar-brand a {
+  font: 400 32px / 0.9 var(--st-display);
+  letter-spacing: -0.05em;
+  color: var(--st-ink);
+  text-decoration: none;
+}
+.st-sidebar-brand span {
+  font: 12px / 1.5 var(--st-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--st-muted);
+}
+.st-sidebar nav {
+  display: grid;
+  gap: 2px;
+}
+.st-sidebar-group {
+  font: 12px / 1.5 var(--st-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--st-muted);
+  padding: 16px 4px 8px;
+}
+.st-sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  min-height: 36px;
+  color: var(--st-ink);
+  text-decoration: none;
+  box-sizing: border-box;
+  border-left: 1px solid transparent;
+}
+.st-sidebar-item:hover {
+  background: var(--st-sand);
+}
+.st-sidebar-item[aria-current='page'] {
+  background: var(--st-paper);
+  border-left-color: var(--st-ink);
+}
+.st-sidebar-item small {
+  font: 12px / 1 var(--st-body);
+  color: var(--st-muted);
+  font-variant-numeric: tabular-nums;
+}
+.st-sidebar-foot {
+  margin-top: auto;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Topplinje ──────────────────────────────────────────────────────────── */
+.st-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 0 16px;
+  border-bottom: 1px solid var(--st-line);
+  font: 14px / 1.5 var(--st-body);
+  color: var(--st-ink);
+  flex-wrap: wrap;
+}
+.st-topbar h1 {
+  font: 400 30px / 1.1 var(--st-heading);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.st-topbar-lead {
+  display: grid;
+  gap: 8px;
+}
+.st-topbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ── Meny ───────────────────────────────────────────────────────────────── */
+.st-menu-wrap {
+  position: relative;
+  display: inline-block;
+}
+.st-menu-trigger {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--st-ink);
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font: 13px / 1.5 var(--st-body);
+  padding: 0;
+}
+.st-menu-trigger:hover,
+.st-menu-trigger[aria-expanded='true'] {
+  border-color: var(--st-line);
+  background: var(--st-surface);
+}
+.st-menu-trigger.labelled {
+  width: auto;
+  padding: 0 12px;
+  font: 13px / 1.5 var(--st-body);
+  letter-spacing: 0;
+  gap: 8px;
+  border-color: var(--st-control-border);
+}
+.st-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 100;
+  min-width: 200px;
+  background: var(--st-paper);
+  color: var(--st-ink);
+  border: 1px solid var(--st-ink);
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  font: 13px / 1.5 var(--st-body);
+}
+.st-menu.left {
+  right: auto;
+  left: 0;
+}
+.st-menu-item {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 8px 10px;
+  min-height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--st-ink);
+  font: inherit;
+  cursor: pointer;
+}
+.st-menu-item:hover,
+.st-menu-item:focus-visible {
+  background: var(--st-ink);
+  color: var(--st-paper);
+  outline: 0;
+}
+.st-menu-item.destructive {
+  color: var(--st-error);
+}
+.st-menu-item.destructive:hover {
+  background: var(--st-error);
+  color: var(--st-paper);
+}
+.st-menu-sep {
+  height: 1px;
+  background: var(--st-line);
+  margin: 6px 0;
+}
+
+/* ── Avatar, skjelett, tom tilstand ─────────────────────────────────────── */
+.st-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--st-sand);
+  color: var(--st-ink);
+  font: 12px / 1 var(--st-body);
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  flex: none;
+  box-sizing: border-box;
+}
+.st-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.st-skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--st-surface) 25%,
+    var(--st-sand) 50%,
+    var(--st-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: st-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes st-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+.st-skeleton-lines {
+  display: grid;
+  gap: 10px;
+}
+.st-empty {
+  padding: 64px 24px;
+  text-align: center;
+  background: var(--st-surface);
+  color: var(--st-ink);
+  font: 16px / 1.6 var(--st-body);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+.st-empty h2 {
+  font: 400 30px / 1.12 var(--st-heading);
+  margin: 0;
+}
+.st-empty p {
+  margin: 0 0 16px;
+  max-width: 44ch;
+  color: var(--st-muted);
+}
+
+/* ── Bryter ─────────────────────────────────────────────────────────────── */
+.st-switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font: 14px / 1.5 var(--st-body);
+  color: var(--st-ink);
+  cursor: pointer;
+}
+.st-switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border: 1px solid var(--st-muted);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  flex: none;
+  transition:
+    background var(--st-duration) var(--st-ease),
+    border-color var(--st-duration) var(--st-ease);
+}
+.st-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background: var(--st-muted);
+  transition:
+    transform var(--st-duration) var(--st-ease),
+    background var(--st-duration) var(--st-ease);
+}
+.st-switch[aria-checked='true'] {
+  background: var(--st-ink);
+  border-color: var(--st-ink);
+}
+.st-switch[aria-checked='true']::after {
+  transform: translateX(18px);
+  background: var(--st-paper);
+}
+.st-switch:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Datovelger ─────────────────────────────────────────────────────────── */
+.st-datepicker {
+  position: relative;
+}
+.st-calendar {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  z-index: 100;
+  background: var(--st-paper);
+  color: var(--st-ink);
+  border: 1px solid var(--st-ink);
+  padding: 16px;
+  width: 296px;
+  box-sizing: border-box;
+  font: 13px / 1.5 var(--st-body);
+}
+.st-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.st-cal-head b {
+  font-weight: 400;
+  font: 400 18px / 1.2 var(--st-heading);
+}
+.st-cal-nav {
+  background: none;
+  border: 1px solid var(--st-line);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  color: var(--st-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.st-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.st-cal-grid span {
+  font: 11px / 1 var(--st-label);
+  text-transform: uppercase;
+  color: var(--st-muted);
+  text-align: center;
+  padding: 6px 0;
+}
+.st-cal-day {
+  height: 36px;
+  background: none;
+  border: 1px solid transparent;
+  color: var(--st-ink);
+  font: inherit;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.st-cal-day:hover {
+  border-color: var(--st-line);
+}
+.st-cal-day.other {
+  color: var(--st-muted);
+  opacity: 0.6;
+}
+.st-cal-day.today {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.st-cal-day[aria-selected='true'] {
+  background: var(--st-ink);
+  color: var(--st-paper);
+  border-color: var(--st-ink);
+}
+.st-cal-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+.st-cal-foot button {
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  font: inherit;
+  color: var(--st-ink);
+  border-bottom: 1px solid var(--st-ink);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-skeleton {
+    animation: none;
+  }
+}

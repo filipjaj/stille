@@ -198,6 +198,93 @@
   color-scheme: dark;
 }
 
+/* ── Kompakt tetthet og statusfarger ────────────────────────────────────── */
+/* Portert fra designsystemets tokens/compact.css. Statusfargene er dempede
+   jordtoner — aldri mettede. Tettheten slås på med data-density="compact". */
+:root {
+  --st-success: #4f6b4a;
+  --st-warning: #7f5f25;
+  --st-info: #4a5f73;
+  --st-success-bg: #e6ecdf;
+  --st-warning-bg: #f1e7d2;
+  --st-info-bg: #e1e6eb;
+  --st-error-bg: #f0dcd8;
+  --st-sidebar-width: 240px;
+}
+
+[data-theme='inverse'],
+.st-inverse {
+  --st-success: #a9c4a0;
+  --st-warning: #d9bc7e;
+  --st-info: #a9bbcc;
+  --st-success-bg: #3a4636;
+  --st-warning-bg: #4a3f2a;
+  --st-info-bg: #38424c;
+  --st-error-bg: #4c332f;
+}
+
+[data-density='compact'] {
+  --st-control-height: 36px;
+  --st-control-pad-y: 8px;
+  --st-control-pad-x: 12px;
+  --st-icon-control: 18px;
+  --st-hit-min: 36px;
+  --st-gutter: 16px;
+  --st-margin: 24px;
+}
+[data-density='compact'] .st-button {
+  min-height: 36px;
+  padding: 8px 16px;
+  gap: 12px;
+  font-size: 13px;
+}
+[data-density='compact'] .st-input,
+[data-density='compact'] .st-select {
+  min-height: 36px;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+[data-density='compact'] .st-field {
+  margin-bottom: 16px;
+}
+[data-density='compact'] .st-field-label {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+[data-density='compact'] .st-text-link {
+  font-size: 13px;
+  padding: 6px 0;
+}
+[data-density='compact'] .st-checkbox,
+[data-density='compact'] .st-radio {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+}
+[data-density='compact'] .st-check-label,
+[data-density='compact'] .st-radio-label {
+  font-size: 13px;
+  gap: 10px;
+}
+[data-density='compact'] .st-select-option {
+  min-height: 36px;
+  padding: 6px 10px;
+}
+[data-density='compact'] .st-tab {
+  padding: 8px 0;
+  min-height: 36px;
+  font-size: 13px;
+}
+[data-density='compact'] .st-page,
+[data-density='compact'] .st-page-gap {
+  height: 36px;
+  min-width: 36px;
+}
+[data-density='compact'] .st-pagination {
+  font-size: 13px;
+  padding-top: 16px;
+}
+
 /* ── Grunnflate ─────────────────────────────────────────────────────────── */
 /* Malen fra Payload setter html{background:#000}. Stille-flatene er papir. */
 html:has(.st) {
