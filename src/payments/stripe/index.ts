@@ -28,9 +28,17 @@ export type StripeAdapterConfig = {
 /**
  * Lager en Stripe-klient som fungerer på Cloudflare Workers.
  *
- * `stripe@22` velger `FetchHttpClient` av seg selv i workerd — verifisert i
- * spiken — så ingen eksplisitt httpClient trengs. Det som *ikke* fungerer er
- * synkron signaturverifisering; se webhooks.ts.
+ * **`httpClient` må settes eksplisitt.** `stripe@22` har en `workerd`-export
+ * som velger fetch-klienten av seg selv, men det forutsetter at bundleren
+ * løser den export-betingelsen. Det gjør ikke OpenNext: den bygde worker-en
+ * inneholdt Stripes Node-plattform — `NodeHttpClient` og `node:https` — og
+ * null spor av web-plattformen.
+ *
+ * Konsekvensen var ikke en feilmelding. Utgående kall over `node:https` i
+ * workerd fullfører aldri, så `/api/payments/stripe/initiate` hang til
+ * runtimen ga opp: ingen respons, ingen exception, ingenting i loggen. Samme
+ * signatur som synkron signaturverifisering i webhooks.ts, og samme svar —
+ * be om web-implementasjonen i stedet for å håpe på riktig oppløsning.
  */
 export function createStripeClient(secretKey: string): Stripe {
   return new Stripe(secretKey, {
@@ -38,6 +46,7 @@ export function createStripeClient(secretKey: string): Stripe {
     // er gyldig i API-et og er dokumentert som riktig måte å be om preview-funksjoner.
     apiVersion: API_VERSION,
     appInfo: { name: 'Stille', url: 'https://stille.example' },
+    httpClient: Stripe.createFetchHttpClient(),
   })
 }
 
