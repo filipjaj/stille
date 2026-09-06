@@ -23,6 +23,8 @@ Payload — det finnes ingen hardkodede produkter, priser eller tekster i rutene
 
 ## Kom i gang
 
+Krever **pnpm 11**. Se «Én allowlist for byggeskript» under for hvorfor.
+
 ```bash
 pnpm install
 cp .env.example .env          # fyll inn PAYLOAD_SECRET
@@ -69,6 +71,17 @@ deploydagen.
 pluginens webhook bruker synkron signaturverifisering, som kaster på Workers og gjør at
 ingen ordre noen gang bekreftes; og den bruker kurvsummen fra requesten som beløp.
 Vår henter kurven fra databasen og regner totalen selv. Se `src/payments/stripe/`.
+
+**Én allowlist for byggeskript.** `pnpm-workspace.yaml` lister de fire pakkene
+som får kjøre postinstall — `workerd`, `esbuild`, `sharp`, `unrs-resolver`. Alt
+annet blokkeres, og postinstall er den klassiske veien inn i et avhengighetstre.
+
+Den lista fantes tidligere to steder: `allowBuilds` her og `onlyBuiltDependencies`
+i package.json, som er mekanismen på pnpm 9 og 10. De hadde allerede drevet fra
+hverandre — package.json manglet `workerd`. To lister som skal si det samme, men
+leses av hver sin versjon, blir før eller siden uenige, og da er det
+sikkerhetskontrollen som taper. Derfor krever prosjektet pnpm 11 og har lista
+ett sted.
 
 **Adminen er Payloads egen, tematisert.** Panelet bygger på én gråtonerampe
 (`--color-base-0` til `--color-base-1000`); vi bytter rampen i stedet for å overstyre
