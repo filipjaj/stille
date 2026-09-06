@@ -42,7 +42,7 @@ function request(body: string, signature: string | null) {
     payload,
     headers,
     text: async () => body,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- handleren
+
     // trenger bare de tre feltene over; å bygge en full PayloadRequest ville
     // testet Payloads eget rammeverk, ikke vår kode.
   } as any

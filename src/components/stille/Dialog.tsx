@@ -62,12 +62,18 @@ export function Dialog({
 }: DialogProps) {
   const panelRef = React.useRef<HTMLDivElement>(null)
   const previouslyFocused = React.useRef<HTMLElement | null>(null)
-  const [mounted, setMounted] = React.useState(false)
-
-  // Portalen kan bare rendres etter at komponenten er montert på klienten.
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
+  /**
+   * Er vi på klienten? Portalen trenger `document`, som ikke finnes under SSR.
+   *
+   * `useSyncExternalStore` gir false på serveren og true etter hydrering, uten
+   * å sette state i en effekt — det ville trigget en ekstra render før den
+   * første var ferdig.
+   */
+  const mounted = React.useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  )
 
   React.useEffect(() => {
     if (!open) return

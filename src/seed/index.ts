@@ -359,7 +359,6 @@ export async function seed(payload: Payload): Promise<void> {
   })
 
   if (existingPage.totalDocs === 0) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- blokk-unionen
     // er generert per blokktype; en heterogen literal-array treffer den ikke uten
     // en cast, og hver blokk er verifisert mot sin egen definisjon i src/blocks/.
     const layout: any[] = [

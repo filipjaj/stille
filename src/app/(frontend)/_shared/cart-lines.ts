@@ -89,6 +89,9 @@ async function fetchByIds<T>(collection: string, ids: number[], fields: string[]
   return data.docs
 }
 
+/** Stabil referanse, så en tom kurv ikke gir ny array ved hver render. */
+const EMPTY_LINES: CartLineView[] = []
+
 /**
  * Slår opp visningsdata for linjene i kurven. Kurvens egen sammensetning
  * (produkt-id, variant-id, antall) er alltid fasiten — dette legger bare til
@@ -98,8 +101,11 @@ export function useCartLines(items: RawCartItem[]): {
   lines: CartLineView[]
   isLoading: boolean
 } {
-  const [lines, setLines] = useState<CartLineView[]>([])
-  const [isLoading, setIsLoading] = useState(items.length > 0)
+  // Linjene lagres sammen med nøkkelen de hører til. Da kan lastetilstanden
+  // utledes — den er sann så lenge det vi har hentet gjelder en annen kurv enn
+  // den vi ser på nå — i stedet for å settes synkront i effekten.
+  const [fetched, setFetched] = useState<{ key: string; lines: CartLineView[] } | null>(null)
+  const isEmpty = items.length === 0
 
   const productIds = Array.from(
     new Set(items.map((item) => toId(item.product)).filter((id): id is number => id !== undefined)),
@@ -116,15 +122,10 @@ export function useCartLines(items: RawCartItem[]): {
     .join(',')}`
 
   useEffect(() => {
+    // Tom kurv utledes i stedet for å settes.
+    if (isEmpty) return
+
     let cancelled = false
-
-    if (items.length === 0) {
-      setLines([])
-      setIsLoading(false)
-      return
-    }
-
-    setIsLoading(true)
 
     void (async () => {
       const [products, variants] = await Promise.all([
@@ -179,8 +180,7 @@ export function useCartLines(items: RawCartItem[]): {
         })
       }
 
-      setLines(nextLines)
-      setIsLoading(false)
+      setFetched({ key, lines: nextLines })
     })()
 
     return () => {
@@ -188,9 +188,15 @@ export function useCartLines(items: RawCartItem[]): {
     }
     // key oppsummerer alt effekten bryr seg om — se kommentaren over.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key])
+  }, [key, isEmpty])
 
-  return { lines, isLoading }
+  // Utledet, ikke lagret: en tom kurv har ingen linjer og venter ikke på noe,
+  // og vi laster så lenge det vi har hentet gjelder en annen kurv.
+  const current = fetched?.key === key ? fetched.lines : undefined
+  return {
+    lines: isEmpty ? EMPTY_LINES : (current ?? EMPTY_LINES),
+    isLoading: isEmpty ? false : current === undefined,
+  }
 }
 
 /** Kurvlinjer om til `Line[]` for `calculateTotals`. */
