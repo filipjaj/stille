@@ -11,6 +11,7 @@ import { EmptyState } from '@/components/stille/EmptyState'
 import { Eyebrow } from '@/components/stille/Eyebrow'
 import { Field } from '@/components/stille/Field'
 import { RadioGroup, type RadioGroupItem } from '@/components/stille/RadioGroup'
+import { CART_STORAGE_KEY } from '@/ecommerce/currency'
 import { formatOre, formatShipping } from '@/lib/format'
 import { calculateTotals } from '@/money'
 import type { Ore } from '@/money'
@@ -49,6 +50,27 @@ type ShippingMethod = 'posten' | 'hent'
  * ennå, se `handleSubmit`), men har `name` klare for den dagen ordren faktisk
  * opprettes.
  */
+/**
+ * Er feilen «du har ikke tilgang til denne kurven»?
+ *
+ * Payload svarer 403 med sin egen tekst, og plugin-en gir oss responskroppen
+ * som feilmelding — altså rå JSON. Vi kjenner den igjen på innholdet i stedet
+ * for å vise den til kunden.
+ */
+function isAccessError(message: string): boolean {
+  return message.includes('not allowed to perform this action') || message.includes('Forbidden')
+}
+
+/** Glemmer kurven i nettleseren, så neste besøk starter på nytt. */
+function forgetStoredCart(): void {
+  try {
+    localStorage.removeItem(CART_STORAGE_KEY)
+    localStorage.removeItem(`${CART_STORAGE_KEY}_secret`)
+  } catch {
+    // Privat modus: ingenting lagret, ingenting å rydde.
+  }
+}
+
 export function CheckoutView({
   shippingCost,
   freeShippingThreshold,
@@ -130,11 +152,25 @@ export function CheckoutView({
         paymentIntentID: result.paymentIntentID,
       })
     } catch (error) {
-      setPaymentNotice(
-        error instanceof Error
-          ? error.message
-          : 'Betalingen kunne ikke startes. Prøv igjen, eller ta kontakt med oss.',
-      )
+      const message = error instanceof Error ? error.message : ''
+
+      // En kurv opprettet mens du var innlogget lagres med eier og uten
+      // secret. Forsvinner sesjonen — utløpt, utlogget, en annen fane — kan
+      // nettleseren ikke lenger lese den, og alt som gjelder den kurven svarer
+      // 403. Kurv-ID-en ligger fortsatt i localStorage, så uten opprydding
+      // ender kunden i en blindvei hen ikke kommer ut av: kassen feiler, og
+      // kurven lar seg ikke engang tømme.
+      if (isAccessError(message)) {
+        forgetStoredCart()
+        setPaymentNotice(
+          'Handlekurven hører til en økt som ikke lenger er aktiv. Vi har nullstilt den — ' +
+            'legg objektene i kurven på nytt, så tar vi det derfra.',
+        )
+      } else {
+        setPaymentNotice(
+          message || 'Betalingen kunne ikke startes. Prøv igjen, eller ta kontakt med oss.',
+        )
+      }
     } finally {
       setStarting(false)
     }
