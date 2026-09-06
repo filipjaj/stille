@@ -94,12 +94,33 @@ titalls avledede variabler, så mørkt tema følger med av seg selv. Se
 pnpm deploy
 ```
 
-Bygger og deployer worker-en. Krever at `wrangler.jsonc` peker på dine egne D1- og
-R2-ressurser, og at `PAYLOAD_SECRET` er satt som secret:
+Krever at `PAYLOAD_SECRET` er satt som secret, og at bindingene peker på dine egne
+D1- og R2-ressurser:
 
 ```bash
+wrangler d1 create stille
+wrangler r2 bucket create stille
 wrangler secret put PAYLOAD_SECRET
 ```
+
+`wrangler.jsonc` i repoet er en **mal** — `database_id` står som `DATABASE_ID`.
+Ikke fyll den ut hvis du skal dele repoet videre: da peker malen på din database.
+Legg dine egne IDer i en `wrangler.local.jsonc` (den er i `.gitignore`) og pek på
+den i stedet:
+
+```bash
+pnpm exec opennextjs-cloudflare deploy -c wrangler.local.jsonc
+```
+
+Samme fil brukes til å seede produksjon. `WRANGLER_CONFIG` sier hvor bindingene
+leses fra, `PAYLOAD_REMOTE_BINDINGS` at de skal treffe de ekte ressursene:
+
+```bash
+WRANGLER_CONFIG=wrangler.local.jsonc PAYLOAD_REMOTE_BINDINGS=true pnpm seed
+```
+
+Har du allerede opprettet en administrator i `/admin`, sett `SEED_ADMIN_EMAIL` til
+den adressen. Seed rører aldri passord eller roller på en konto som finnes.
 
 Skjemaet trenger ingen egen kommando: `prodMigrations` i `src/payload.config.ts` gjør at
 worker-en kjører ventende migrasjoner selv ved oppstart. Det er også grunnen til at

@@ -55,3 +55,6 @@ node_modules/
 
 # Arbeidsnotater fra agent-kjøringer (ledger, briefer, review-pakker)
 .superpowers
+
+# Personlig deploy-config med egne konto- og ressurs-IDer
+wrangler.local.jsonc

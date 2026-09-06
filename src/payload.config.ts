@@ -129,6 +129,15 @@ function getCloudflareContextFromWrangler(): Promise<CloudflareContext> {
     ({ getPlatformProxy }) =>
       getPlatformProxy({
         environment: process.env.CLOUDFLARE_ENV,
+        // Hvilken wrangler-config bindingene leses fra.
+        //
+        // `wrangler.jsonc` i repoet er en mal med `DATABASE_ID` som
+        // plassholder, så den kan ikke brukes mot ekte ressurser. Fyller du
+        // den ut, havner dine konto- og database-IDer i et repo andre kloner.
+        // Legg dem i en egen fil utenfor git i stedet, og pek hit:
+        //
+        //   WRANGLER_CONFIG=wrangler.local.jsonc PAYLOAD_REMOTE_BINDINGS=true pnpm seed
+        ...(process.env.WRANGLER_CONFIG ? { configPath: process.env.WRANGLER_CONFIG } : {}),
         // Eksterne bindinger slås på eksplisitt, ikke utledet.
         //
         // Bare `deploy:database` skal treffe den ekte databasen. Under
