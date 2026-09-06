@@ -80,12 +80,16 @@ titalls avledede variabler, så mørkt tema følger med av seg selv. Se
 pnpm deploy
 ```
 
-Kjører migrasjonene mot D1 og deployer worker-en. Krever at `wrangler.jsonc` peker på
-dine egne D1- og R2-ressurser, og at `PAYLOAD_SECRET` er satt som secret:
+Bygger og deployer worker-en. Krever at `wrangler.jsonc` peker på dine egne D1- og
+R2-ressurser, og at `PAYLOAD_SECRET` er satt som secret:
 
 ```bash
 wrangler secret put PAYLOAD_SECRET
 ```
+
+Skjemaet trenger ingen egen kommando: `prodMigrations` i `src/payload.config.ts` gjør at
+worker-en kjører ventende migrasjoner selv ved oppstart. Det er også grunnen til at
+bygget aldri trenger tilgang til produksjonsdatabasen.
 
 ## Kommandoer
 
