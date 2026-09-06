@@ -15,12 +15,6 @@
  *   beskjed om å ikke skalere bilder og å bruke ekte skrifttyper.
  * - **`-webkit-text-size-adjust`.** iOS forstørrer ellers små tekster på egen
  *   hånd og bryter kolonnebredder.
- *
- * Fragmentet renses også: React 19 løfter ut ressurshint — typisk
- * `<link rel="preload" as="image">` for hvert bilde — og legger dem først i
- * markupen. På nett er de en optimalisering. I e-post er de søppel som havner
- * utenfor tabellen, og noen klienter viser dem som tom plass øverst i
- * meldingen.
  */
 export function emailDocument({
   title,
@@ -54,19 +48,9 @@ export function emailDocument({
 <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">${escapeHtml(
     preheader,
   )}${'&#8199;&#65279;&#847; '.repeat(30)}</div>
-${stripResourceHints(body)}
+${body}
 </body>
 </html>`
-}
-
-/**
- * Fjerner `<link>` og `<script>` fra et rendret fragment.
- *
- * E-post har verken bruk for eller støtte for noen av delene, og React setter
- * inn `<link>` uoppfordret.
- */
-function stripResourceHints(body: string): string {
-  return body.replace(/<link\b[^>]*>/gi, '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
 }
 
 /**
@@ -83,11 +67,18 @@ export function absoluteUrl(url: string | undefined, base: string): string | und
   return `${base.replace(/\/+$/, '')}/${url.replace(/^\/+/, '')}`
 }
 
-/** Minimal escaping for verdiene vi selv setter inn i dokumentrammen. */
-function escapeHtml(value: string): string {
+/**
+ * Escaper en verdi som skal inn i markupen.
+ *
+ * Malen bygger HTML som strenger, så dette er den eneste beskyttelsen mot at
+ * et produktnavn med en apostrof eller et vinkelparentes river i stykker
+ * dokumentet.
+ */
+export function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
 }

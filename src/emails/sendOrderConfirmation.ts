@@ -1,5 +1,4 @@
 import type { Payload } from 'payload'
-import { renderToStaticMarkup } from 'react-dom/server'
 
 import { formatOre, formatShipping } from '@/lib/format'
 import { mediaUrl } from '@/lib/media'
@@ -7,7 +6,7 @@ import type { Ore } from '@/money'
 import type { Order, Product } from '@/payload-types'
 
 import { absoluteUrl, emailDocument } from './document'
-import { OrderConfirmation, type OrderConfirmationLine } from './OrderConfirmation'
+import { orderConfirmation, type OrderConfirmationLine } from './OrderConfirmation'
 
 type Args = {
   payload: Payload
@@ -73,19 +72,17 @@ export async function sendOrderConfirmation({
       html: emailDocument({
         title: `Ordrebekreftelse ${order.id}`,
         preheader: `Takk for bestillingen. Vi gjør ordre ${order.id} klar for sending.`,
-        body: renderToStaticMarkup(
-          OrderConfirmation({
-            firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-            orderNo: String(order.id),
-            lines,
-            subtotal: formatOre(amounts.subtotal),
-            shipping: formatShipping(amounts.shipping),
-            total: formatOre(amounts.total),
-            deliveryName: firstName,
-            deliveryAddress: [],
-            orderUrl: `${siteUrl}/konto`,
-          }),
-        ),
+        body: orderConfirmation({
+          firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1),
+          orderNo: String(order.id),
+          lines,
+          subtotal: formatOre(amounts.subtotal),
+          shipping: formatShipping(amounts.shipping),
+          total: formatOre(amounts.total),
+          deliveryName: firstName,
+          deliveryAddress: [],
+          orderUrl: `${siteUrl}/konto`,
+        }),
       }),
     })
 

@@ -1,8 +1,7 @@
-import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
 import { absoluteUrl, emailDocument } from './document'
-import { OrderConfirmation } from './OrderConfirmation'
+import { orderConfirmation } from './OrderConfirmation'
 
 /**
  * E-post-HTML er ikke web-HTML.
@@ -16,27 +15,25 @@ import { OrderConfirmation } from './OrderConfirmation'
 const html = emailDocument({
   title: 'Ordrebekreftelse ST-1',
   preheader: 'Takk for bestillingen.',
-  body: renderToStaticMarkup(
-    OrderConfirmation({
-      firstName: 'Anna',
-      orderNo: 'ST-24187',
-      lines: [
-        { title: 'Keramikk og lin', meta: '1 stk', sum: '640,–' },
-        {
-          title: 'Lys gjennom lin',
-          meta: '1 stk',
-          sum: '890,–',
-          imageUrl: 'https://stille.example/images/x.png',
-        },
-      ],
-      subtotal: '1 530,–',
-      shipping: 'Fri',
-      total: '1 530,–',
-      deliveryName: 'Anna Eksempel',
-      deliveryAddress: ['Eksempelveien 1', '0001 Oslo'],
-      orderUrl: 'https://stille.example/konto',
-    }),
-  ),
+  body: orderConfirmation({
+    firstName: 'Anna',
+    orderNo: 'ST-24187',
+    lines: [
+      { title: 'Keramikk og lin', meta: '1 stk', sum: '640,–' },
+      {
+        title: 'Lys gjennom lin',
+        meta: '1 stk',
+        sum: '890,–',
+        imageUrl: 'https://stille.example/images/x.png',
+      },
+    ],
+    subtotal: '1 530,–',
+    shipping: 'Fri',
+    total: '1 530,–',
+    deliveryName: 'Anna Eksempel',
+    deliveryAddress: ['Eksempelveien 1', '0001 Oslo'],
+    orderUrl: 'https://stille.example/konto',
+  }),
 })
 
 describe('ordrebekreftelse som e-post-HTML', () => {
@@ -69,7 +66,6 @@ describe('ordrebekreftelse som e-post-HTML', () => {
   })
 
   it('har ingen eksterne stilark, ressurshint eller skript', () => {
-    // React 19 løfter ut <link rel="preload"> for hvert bilde. Rammen fjerner dem.
     expect(html).not.toContain('<link')
     expect(html).not.toContain('<script')
     // Alt av layout skal ligge inline på elementene.
@@ -102,6 +98,45 @@ describe('ordrebekreftelse som e-post-HTML', () => {
   it('tar vare på norske tegn', () => {
     expect(html).toContain('gjør')
     expect(html).toContain('på vei')
+  })
+})
+
+describe('escaping', () => {
+  it('lukker ikke dokumentet på et produktnavn med markup i seg', () => {
+    const evil = orderConfirmation({
+      firstName: 'Anna',
+      orderNo: 'ST-1',
+      lines: [{ title: '<script>alert(1)</script>', meta: '1 stk', sum: '1,–' }],
+      subtotal: '1,–',
+      shipping: 'Fri',
+      total: '1,–',
+      deliveryName: 'Anna',
+      deliveryAddress: [],
+      orderUrl: 'https://stille.example/konto',
+    })
+
+    expect(evil).not.toContain('<script')
+    expect(evil).toContain('&lt;script&gt;')
+  })
+
+  it('bryter ikke ut av et href-attributt', () => {
+    const evil = orderConfirmation({
+      firstName: 'Anna',
+      orderNo: 'ST-1',
+      lines: [],
+      subtotal: '1,–',
+      shipping: 'Fri',
+      total: '1,–',
+      deliveryName: 'Anna',
+      deliveryAddress: [],
+      orderUrl: 'https://stille.example/" onclick="alert(1)',
+    })
+
+    // Det avgjørende er at anførselstegnet aldri overlever rått: uten det kan
+    // ingenting lukke href-verdien og starte et nytt attributt. Teksten
+    // «onclick=» blir stående inne i verdien, og er da bare tekst.
+    expect(evil).not.toContain('example/" onclick')
+    expect(evil).toContain('&quot; onclick=&quot;')
   })
 })
 
