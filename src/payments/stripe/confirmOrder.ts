@@ -1,5 +1,7 @@
 import type { PaymentAdapter } from '@payloadcms/plugin-ecommerce/types'
 
+import { sendOrderConfirmation } from '@/emails/sendOrderConfirmation'
+
 import { createStripeClient, type StripeAdapterConfig } from './index'
 
 /**
@@ -60,6 +62,31 @@ export const confirmOrder =
       },
       req,
     })
+
+    // E-posten sendes etter at ordren er opprettet, og kan ikke velte den:
+    // sendOrderConfirmation svelger sine egne feil og logger dem. Kunden har
+    // betalt, og ordren finnes — en e-post som ikke går ut skal ikke endre det.
+    const recipient =
+      transaction.customerEmail ??
+      (typeof transaction.customer === 'object' ? transaction.customer?.email : undefined)
+
+    if (recipient) {
+      await sendOrderConfirmation({
+        payload,
+        order,
+        email: recipient,
+        amounts: {
+          // Ordren lagrer bruttototalen. Delsum og frakt er ikke splittet på
+          // ordren i dag, så e-posten viser totalen som delsum og fri frakt.
+          // Splitten hører hjemme på ordremodellen — se README.
+          subtotal: transaction.amount ?? 0,
+          shipping: 0,
+          total: transaction.amount ?? 0,
+        },
+      })
+    } else {
+      payload.logger.warn(`Ordre ${order.id} har ingen e-postadresse — ingen bekreftelse sendt.`)
+    }
 
     return {
       message: 'Ordren er bekreftet.',
