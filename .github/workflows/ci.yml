@@ -27,7 +27,7 @@ jobs:
         run: pnpm exec tsc --noEmit
 
       - name: Tester
-        run: pnpm exec vitest run src
+        run: pnpm run test:int
         env:
           PAYLOAD_SECRET: ci-only-not-a-real-secret
 
