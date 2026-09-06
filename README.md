@@ -24,10 +24,10 @@ Payload — det finnes ingen hardkodede produkter, priser eller tekster i rutene
 ## Kom i gang
 
 ```bash
-pnpm install --ignore-workspace
+pnpm install
 cp .env.example .env          # fyll inn PAYLOAD_SECRET
 pnpm payload migrate          # oppretter skjemaet i lokal D1
-pnpm seed                     # demoinnhold og en administrator
+pnpm seed                     # demoinnhold, bilder og en administrator
 pnpm dev
 ```
 
@@ -38,16 +38,17 @@ Seed skriver ut et generert administratorpassord første gang, med mindre du set
 
 ## Miljøvariabler
 
-| Variabel                                | Nødvendig    | Hva den gjør                              |
-| --------------------------------------- | ------------ | ----------------------------------------- |
-| `PAYLOAD_SECRET`                        | ja           | Signerer sesjoner. `openssl rand -hex 32` |
-| `SEED_ADMIN_EMAIL`                      | nei          | Standard `admin@example.com`              |
-| `SEED_ADMIN_PASSWORD`                   | nei          | Genereres tilfeldig hvis den er tom       |
-| `STRIPE_SECRET_KEY`                     | for betaling | Serverside Stripe-nøkkel                  |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`    | for betaling | Klientside Stripe-nøkkel                  |
-| `STRIPE_WEBHOOKS_SIGNING_SECRET`        | for betaling | Verifiserer webhooks                      |
-| `RESEND_API_KEY`                        | for e-post   | Transaksjonelle e-poster                  |
-| `EMAIL_FROM_ADDRESS`, `EMAIL_FROM_NAME` | for e-post   | Avsender                                  |
+| Variabel                                | Nødvendig    | Hva den gjør                                |
+| --------------------------------------- | ------------ | ------------------------------------------- |
+| `PAYLOAD_SECRET`                        | ja           | Signerer sesjoner. `openssl rand -hex 32`   |
+| `SEED_ADMIN_EMAIL`                      | nei          | Standard `admin@example.com`                |
+| `SEED_ADMIN_PASSWORD`                   | nei          | Genereres tilfeldig hvis den er tom         |
+| `NEXT_PUBLIC_SITE_URL`                  | for e-post   | Gjør lenker og bilder i e-postene absolutte |
+| `STRIPE_SECRET_KEY`                     | for betaling | Serverside Stripe-nøkkel                    |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`    | for betaling | Klientside Stripe-nøkkel                    |
+| `STRIPE_WEBHOOKS_SIGNING_SECRET`        | for betaling | Verifiserer webhooks                        |
+| `RESEND_API_KEY`                        | for e-post   | Transaksjonelle e-poster                    |
+| `EMAIL_FROM_ADDRESS`, `EMAIL_FROM_NAME` | for e-post   | Avsender                                    |
 
 ## Noen valg som er verdt å kjenne til
 
@@ -103,8 +104,9 @@ bygget aldri trenger tilgang til produksjonsdatabasen.
 
 ## Ikke ferdig
 
-**Demobildene følger ikke med.** Legg PNG-ene i `public/images/` og kjør `pnpm seed` på
-nytt — seed kobler dem opp og oppretter artiklene og lookbook-serien, som krever bilde.
+**Bildene er en demo, ikke en leveranse.** De sju i `public/images/` er
+AI-genererte materialstudier som holder flatene i gang. To produkter og tre artikler
+bruker et bilde i feil format og croppes; `docs/bildebrief.md` beskriver hva som mangler.
 
 **Vipps krever preview-tilgang fra Stripe.** Betalingsadapteren er klar; metoden dukker
 opp av seg selv i checkout når Stripe innvilger tilgang på kontoen din. Kort og Klarna
