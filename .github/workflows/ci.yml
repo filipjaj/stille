@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # Prosjektet installeres med --ignore-workspace; se `ii`-scriptet.
+      - run: pnpm install --ignore-workspace --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Tester
+        run: pnpm exec vitest run src
+        env:
+          PAYLOAD_SECRET: ci-only-not-a-real-secret
+
+      # Bygget krever ingen Cloudflare-legitimasjon: konfigurasjonen ber bare om
+      # eksterne bindinger når `payload migrate` kjøres i produksjon.
+      - name: Bygg
+        run: pnpm build
+        env:
+          PAYLOAD_SECRET: ci-only-not-a-real-secret

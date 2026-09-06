@@ -35,14 +35,19 @@ const realpath = (value: string) => {
   }
 }
 
-const isCLI = process.argv.some((value) => {
-  const resolved = realpath(value)
-  if (!resolved) return false
-  return (
-    resolved.endsWith(path.join('payload', 'bin.js')) ||
-    resolved.endsWith(path.join('next', 'dist', 'bin', 'next'))
-  )
-})
+/**
+ * Kjører vi Payloads egen CLI (`payload migrate`), eller Next?
+ *
+ * Skillet betyr noe: migrasjoner skal treffe den ekte databasen i produksjon,
+ * mens et bygg ikke skal snakke med produksjonsdata i det hele tatt.
+ */
+const isPayloadCLI = process.argv.some(
+  (value) => realpath(value)?.endsWith(path.join('payload', 'bin.js')) ?? false,
+)
+const isNextCLI = process.argv.some(
+  (value) => realpath(value)?.endsWith(path.join('next', 'dist', 'bin', 'next')) ?? false,
+)
+const isCLI = isPayloadCLI || isNextCLI
 const isProduction = process.env.NODE_ENV === 'production'
 
 const createLog =
@@ -124,7 +129,17 @@ function getCloudflareContextFromWrangler(): Promise<CloudflareContext> {
     ({ getPlatformProxy }) =>
       getPlatformProxy({
         environment: process.env.CLOUDFLARE_ENV,
-        remoteBindings: isProduction,
+        // Eksterne bindinger slås på eksplisitt, ikke utledet.
+        //
+        // Bare `deploy:database` skal treffe den ekte databasen. Under
+        // `next build` er remote-bindinger både unødvendige og skadelige:
+        // bygget krever da Cloudflare-innlogging og feiler i ethvert miljø
+        // uten legitimasjon — inkludert en frisk klone av repoet og CI.
+        //
+        // Flagget er en miljøvariabel og ikke utledet fra `process.argv`, fordi
+        // Next kjører sidedatainnsamling i egne worker-prosesser der argv ikke
+        // ligner på kommandoen du skrev.
+        remoteBindings: process.env.PAYLOAD_REMOTE_BINDINGS === 'true',
       } satisfies GetPlatformProxyOptions),
   )
 }

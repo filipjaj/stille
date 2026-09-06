@@ -10,6 +10,15 @@ import { Footer } from '@/components/butikk/Footer'
 import { Header } from '@/components/butikk/Header'
 import { Providers } from '@/components/butikk/Providers'
 
+/**
+ * Butikkflatene rendres per forespørsel, ikke ved bygg.
+ *
+ * Hver rute leser levende data fra Payload — produkter, kurv, globals — og en
+ * prerendret side ville bakt inn innholdet fra byggetidspunktet. Kurven og
+ * kontosidene er dessuten per bruker.
+ */
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: {
     default: 'stille',

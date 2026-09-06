@@ -1,123 +1,111 @@
-# Payload Cloudflare Template
+# stille
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/payloadcms/payload/tree/3.x/templates/with-cloudflare-d1)
+En nettbutikk-boilerplate for norsk B2C, bygget på [Payload CMS 3](https://payloadcms.com) og
+Cloudflare Workers med D1 og R2.
 
-**This can only be deployed on Paid Workers right now due to size limits.** This template comes configured with the bare minimum to get started on anything you need.
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/filip-johansen/stille)
 
-## Quick start
+> **Krever betalt Workers-plan.** Payload-bunten er større enn gratisplanens
+> størrelsesgrense for Workers.
 
-This template can be deployed directly to Cloudflare Workers by clicking the button to take you to the setup screen.
+## Hva du får
 
-From there you can connect your code to a git provider such Github or Gitlab, name your Workers, D1 Database and R2 Bucket as well as attach any additional environment variables or services you need.
+Butikkfronten og adminen deler ett designsystem og én datamodell. Alt innhold ligger i
+Payload — det finnes ingen hardkodede produkter, priser eller tekster i rutene.
 
-## Quick Start - local setup
+|                  |                                                                                                                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Butikk**       | Forside, katalog, produktdetalj, journal, artikkel, lookbook, CMS-side, søk, kurv, kasse, bekreftelse, konto, innlogging, 404 |
+| **Admin**        | Payloads eget panel, i butikkens visuelle uttrykk                                                                             |
+| **Datamodell**   | Produkter med varianter og lager, kategorier, lookbooks, artikler, FAQ, sider med ni blokktyper, ordre, kurver, adresser      |
+| **Betaling**     | Stripe: kort og Klarna i dag, Vipps når kontoen din har preview-tilgang                                                       |
+| **Designsystem** | 28 komponenter, tokens for lys og mørk flate, egne fonter                                                                     |
 
-To spin up this template locally, follow these steps:
-
-### Clone
-
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. Cloudflare will connect your app to a git provider such as Github and you can access your code from there.
-
-### Local Development
-
-## How it works
-
-Out of the box, using [`Wrangler`](https://developers.cloudflare.com/workers/wrangler/) will automatically create local bindings for you to connect to the remote services and it can even create a local mock of the services you're using with Cloudflare.
-
-We've pre-configured Payload for you with the following:
-
-### Collections
-
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
-
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Media
-
-  This is the uploads enabled collection.
-
-### Image Storage (R2)
-
-Images will be served from an R2 bucket which you can then further configure to use a CDN to serve for your frontend directly.
-
-### D1 Database
-
-The Worker will have direct access to a D1 SQLite database which Wrangler can connect locally to, just note that you won't have a connection string as you would typically with other providers.
-
-You can enable read replicas by adding `readReplicas: 'first-primary'` in the DB adapter and then enabling it on your D1 Cloudflare dashboard. Read more about this feature on [our docs](https://payloadcms.com/docs/database/sqlite#d1-read-replicas).
-
-## Working with Cloudflare
-
-Firstly, after installing dependencies locally you need to authenticate with Wrangler by running:
+## Kom i gang
 
 ```bash
-pnpm wrangler login
+pnpm install --ignore-workspace
+cp .env.example .env          # fyll inn PAYLOAD_SECRET
+pnpm payload migrate          # oppretter skjemaet i lokal D1
+pnpm seed                     # demoinnhold og en administrator
+pnpm dev
 ```
 
-This will take you to Cloudflare to login and then you can use the Wrangler CLI locally for anything, use `pnpm wrangler help` to see all available options.
+Butikken ligger på `localhost:3000`, adminen på `/admin`.
 
-Wrangler is pretty smart so it will automatically bind your services for local development just by running `pnpm dev`.
+Seed skriver ut et generert administratorpassord første gang, med mindre du setter
+`SEED_ADMIN_PASSWORD` selv. Det skrives bare ut én gang.
 
-## Deployments
+## Miljøvariabler
 
-When you're ready to deploy, first make sure you have created your migrations:
+| Variabel                                | Nødvendig    | Hva den gjør                              |
+| --------------------------------------- | ------------ | ----------------------------------------- |
+| `PAYLOAD_SECRET`                        | ja           | Signerer sesjoner. `openssl rand -hex 32` |
+| `SEED_ADMIN_EMAIL`                      | nei          | Standard `admin@example.com`              |
+| `SEED_ADMIN_PASSWORD`                   | nei          | Genereres tilfeldig hvis den er tom       |
+| `STRIPE_SECRET_KEY`                     | for betaling | Serverside Stripe-nøkkel                  |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`    | for betaling | Klientside Stripe-nøkkel                  |
+| `STRIPE_WEBHOOKS_SIGNING_SECRET`        | for betaling | Verifiserer webhooks                      |
+| `RESEND_API_KEY`                        | for e-post   | Transaksjonelle e-poster                  |
+| `EMAIL_FROM_ADDRESS`, `EMAIL_FROM_NAME` | for e-post   | Avsender                                  |
+
+## Noen valg som er verdt å kjenne til
+
+**Priser lagres som heltall i øre, brutto inkludert MVA.** Det er norsk B2C-konvensjon:
+prisen kunden ser er prisen som lagres, og MVA utledes per linje. All pengearitmetikk
+ligger i `src/money`, uten Payload-avhengighet og med tester.
+
+**D1 har ingen transaksjoner.** Ordre og transaksjon kan derfor ikke skrives atomisk.
+I stedet er webhook-håndteringen idempotent: hendelses-ID-en skrives først, mot en
+sammensatt unik indeks på `(provider, eventId)`. Et duplikat feiler der, før noen
+sideeffekt. Se `src/collections/WebhookEvents.ts`.
+
+**Dev kjører de samme migrasjonene som prod** (`push: false` på databaseadapteren).
+Standardoppsettet pusher skjemaet direkte i dev, og da testes migrasjonene aldri før
+deploydagen.
+
+**Stripe-adapteren er skrevet fra grunnen** i stedet for pluginens egen, av to grunner:
+pluginens webhook bruker synkron signaturverifisering, som kaster på Workers og gjør at
+ingen ordre noen gang bekreftes; og den bruker kurvsummen fra requesten som beløp.
+Vår henter kurven fra databasen og regner totalen selv. Se `src/payments/stripe/`.
+
+**Adminen er Payloads egen, tematisert.** Panelet bygger på én gråtonerampe
+(`--color-base-0` til `--color-base-1000`); vi bytter rampen i stedet for å overstyre
+titalls avledede variabler, så mørkt tema følger med av seg selv. Se
+`src/app/(payload)/custom.scss`.
+
+## Deploy
 
 ```bash
-pnpm payload migrate:create
+pnpm deploy
 ```
 
-Then run the following command:
+Kjører migrasjonene mot D1 og deployer worker-en. Krever at `wrangler.jsonc` peker på
+dine egne D1- og R2-ressurser, og at `PAYLOAD_SECRET` er satt som secret:
 
 ```bash
-pnpm run deploy
+wrangler secret put PAYLOAD_SECRET
 ```
 
-This will spin up Wrangler in `production` mode, run any created migrations, build the app and then deploy the bundle up to Cloudflare.
+## Kommandoer
 
-That's it! You can if you wish move these steps into your CI pipeline as well.
+|                                      |                                              |
+| ------------------------------------ | -------------------------------------------- |
+| `pnpm dev`                           | Utviklingsserver                             |
+| `pnpm seed`                          | Demoinnhold inn i Payload                    |
+| `pnpm test:int`                      | Enhets- og integrasjonstester                |
+| `pnpm test:e2e`                      | Playwright                                   |
+| `pnpm payload migrate:create <navn>` | Ny migrasjon fra endringer i konfigurasjonen |
 
-## Enabling logs
+## Ikke ferdig
 
-By default logs are not enabled for your API, we've made this decision because it does run against your quota so we've left it opt-in. But you can easily enable logs in one click in the Cloudflare panel, [see docs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs).
+**Demobildene følger ikke med.** Legg PNG-ene i `public/images/` og kjør `pnpm seed` på
+nytt — seed kobler dem opp og oppretter artiklene og lookbook-serien, som krever bilde.
 
-### Logger Configuration
+**Vipps krever preview-tilgang fra Stripe.** Betalingsadapteren er klar; metoden dukker
+opp av seg selv i checkout når Stripe innvilger tilgang på kontoen din. Kort og Klarna
+virker i mellomtiden.
 
-This template includes a custom console-based logger compatible with Cloudflare Workers. Payload's default logger uses `pino-pretty`, which relies on Node.js APIs not available in Workers and would cause `fs.write is not implemented` errors.
+## Lisens
 
-The custom logger in `payload.config.ts`:
-
-- Routes logs through `console.*` methods which Workers handles correctly
-- Outputs JSON-formatted logs for Cloudflare observability
-- Only active in production (development uses the default `pino-pretty` for better DX)
-
-You can control the log level via the `PAYLOAD_LOG_LEVEL` environment variable (e.g., `debug`, `info`, `warn`, `error`).
-
-### Diagnostic Channel Errors
-
-If you see "Failed to publish diagnostic channel message" errors in your observability logs, these typically come from the `undici` HTTP client library. The template includes `skipSafeFetch: true` in the Media collection to use native fetch instead of undici for file uploads, which helps reduce these errors.
-
-Cloudflare Workers runs in an [isolated environment that cannot access private IP ranges](https://developers.cloudflare.com/workers-vpc/examples/route-across-private-services/) by default, providing built-in SSRF protection. This makes `skipSafeFetch` safe to use.
-
-## Known issues
-
-### Image resizing
-
-Workers do not support `sharp`, so image resizing features are not available. The Media collection has `crop` and `focalPoint` disabled for this reason, and options like `imageSizes` will not work.
-
-### GraphQL
-
-We are currently waiting on some issues with GraphQL to be [fixed upstream in Workers](https://github.com/cloudflare/workerd/issues/5175) so full support for GraphQL is not currently guaranteed when deployed.
-
-### Worker size limits
-
-We currently recommend deploying this template to the Paid Workers plan due to bundle [size limits](https://developers.cloudflare.com/workers/platform/limits/#worker-size) of 3mb. We're actively trying to reduce our bundle footprint over time to better meet this metric.
-
-This also applies to your own code, in the case of importing a lot of libraries you may find yourself limited by the bundle.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+MIT
