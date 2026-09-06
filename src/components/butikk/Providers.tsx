@@ -3,7 +3,7 @@
 import { EcommerceProvider } from '@payloadcms/plugin-ecommerce/client/react'
 import React from 'react'
 
-import { NOK } from '@/ecommerce/currency'
+import { CART_STORAGE_KEY, NOK } from '@/ecommerce/currency'
 
 /**
  * Kurv-, adresse- og betalingskonteksten fra `plugin-ecommerce`.
@@ -11,10 +11,18 @@ import { NOK } from '@/ecommerce/currency'
  * Kurven ligger i Payload, ikke i lokal state: `useCart` snakker med
  * carts-collection-en over API-et. Derfor overlever den at fanen lukkes, og
  * checkout leser samme kurv som produktsiden skrev til.
+ *
+ * `syncLocalStorage` settes eksplisitt selv om verdien er den samme som
+ * plugin-ens standard. Nøkkelen er ikke lenger en detalj vi må gjette på:
+ * `useCartReady` leser den for å skille «kurven lastes» fra «det finnes ingen
+ * kurv», og de to må være enige om hva den heter.
  */
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <EcommerceProvider currenciesConfig={{ defaultCurrency: 'NOK', supportedCurrencies: [NOK] }}>
+    <EcommerceProvider
+      currenciesConfig={{ defaultCurrency: 'NOK', supportedCurrencies: [NOK] }}
+      syncLocalStorage={{ key: CART_STORAGE_KEY }}
+    >
       {children}
     </EcommerceProvider>
   )

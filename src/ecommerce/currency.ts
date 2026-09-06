@@ -15,3 +15,13 @@ export const NOK: Currency = {
   symbol: 'kr',
   symbolDisplay: 'symbol',
 }
+
+/**
+ * Nøkkelen kurv-id-en lagres under i localStorage.
+ *
+ * Plugin-en har sin egen standard (`'cart'`), men den er en implementasjons-
+ * detalj vi ellers ville gjettet på. Her settes den eksplisitt og sendes til
+ * `EcommerceProvider`, slik at butikkflatene kan lese den samme nøkkelen for
+ * å avgjøre om det finnes en kurv i det hele tatt — se `useCartReady`.
+ */
+export const CART_STORAGE_KEY = 'cart'

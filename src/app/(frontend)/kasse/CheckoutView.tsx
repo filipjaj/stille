@@ -20,6 +20,7 @@ import {
   cartLinesToMoneyLines,
   resolveShipping,
   useCartLines,
+  useCartReady,
   type RawCartItem,
 } from '../_shared/cart-lines'
 import { StripePayment } from './StripePayment'
@@ -63,7 +64,10 @@ export function CheckoutView({
   >(paymentMethods[0])
   const [paymentNotice, setPaymentNotice] = React.useState<string | null>(null)
 
-  const isLoading = cartIsLoading || cart === undefined || linesLoading
+  // `cart === undefined` betyr ikke at kurven lastes — for en fersk
+  // besøkende finnes den bare ikke. useCartReady skiller de to.
+  const cartReady = useCartReady(cart)
+  const isLoading = cartIsLoading || !cartReady || linesLoading
   const isEmpty = !isLoading && lines.length === 0
 
   const itemsGross = lines.reduce((sum, line) => sum + line.lineGross, 0)

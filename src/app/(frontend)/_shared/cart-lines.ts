@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 
+import { CART_STORAGE_KEY } from '@/ecommerce/currency'
 import { toVatRate } from '@/money'
 import type { Line, Ore, VatRate } from '@/money'
 import { mediaAlt, mediaUrl } from '@/lib/media'
@@ -228,4 +229,45 @@ export function resolveShipping(
 ): { gross: Ore; vatRate: VatRate } {
   const free = shop.freeShippingThreshold != null && itemsGross >= shop.freeShippingThreshold
   return { gross: free ? 0 : shop.shippingCost, vatRate: 25 }
+}
+
+/**
+ * Er kurven ferdig lastet?
+ *
+ * `useCart()` gir ingen ærlig lastetilstand for en fersk besøkende.
+ * `cart` starter som `undefined` og en kurv opprettes først idet noe legges i
+ * den, mens `isLoading` står `false` hele veien. «Kurven hentes» og «det
+ * finnes ingen kurv» er altså samme tilstand i plugin-ens API — og en flate
+ * som venter på at `cart` skal bli definert, venter for alltid.
+ *
+ * Skillet ligger i localStorage: har vi ingen lagret kurv-id, finnes det
+ * ingen kurv, og flaten er tom med en gang. Har vi en, er kurven på vei og
+ * flaten skal vente på den.
+ *
+ * `undefined` betyr «vet ikke ennå» — det er svaret under server-rendring og
+ * i hydreringsrenderingen, der localStorage ikke kan leses. Flaten skal vise
+ * lastetilstand da, ikke blinke «kurven er tom» for noen som har varer i den.
+ */
+export function useCartReady(cart: unknown): boolean {
+  const subscribe = useCallback((onChange: () => void) => {
+    window.addEventListener('storage', onChange)
+    return () => window.removeEventListener('storage', onChange)
+  }, [])
+
+  const storedCartId = useSyncExternalStore(
+    subscribe,
+    (): string | null => {
+      try {
+        return localStorage.getItem(CART_STORAGE_KEY)
+      } catch {
+        // Privat modus eller blokkerte cookies: ingen lagret kurv å vente på.
+        return null
+      }
+    },
+    (): undefined => undefined,
+  )
+
+  if (storedCartId === undefined) return false
+  if (storedCartId === null) return true
+  return cart !== undefined
 }

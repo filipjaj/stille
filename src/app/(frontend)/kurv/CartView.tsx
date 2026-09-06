@@ -17,6 +17,7 @@ import {
   cartLinesToMoneyLines,
   resolveShipping,
   useCartLines,
+  useCartReady,
   type RawCartItem,
 } from '../_shared/cart-lines'
 import styles from './kurv.module.css'
@@ -37,7 +38,10 @@ export function CartView({ shippingCost, freeShippingThreshold }: CartViewProps)
   const items = (cart?.items ?? []) as RawCartItem[]
   const { lines, isLoading: linesLoading } = useCartLines(items)
 
-  const isLoading = cartIsLoading || cart === undefined || linesLoading
+  // `cart === undefined` betyr ikke at kurven lastes — for en fersk
+  // besøkende finnes den bare ikke. useCartReady skiller de to.
+  const cartReady = useCartReady(cart)
+  const isLoading = cartIsLoading || !cartReady || linesLoading
   const isEmpty = !isLoading && lines.length === 0
 
   const itemsGross = lines.reduce((sum, line) => sum + line.lineGross, 0)
