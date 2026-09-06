@@ -3,7 +3,7 @@
 En nettbutikk-boilerplate for norsk B2C, bygget på [Payload CMS 3](https://payloadcms.com) og
 Cloudflare Workers med D1 og R2.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/filip-johansen/stille)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/filipjaj/stille)
 
 > **Krever betalt Workers-plan.** Payload-bunten er større enn gratisplanens
 > størrelsesgrense for Workers.
