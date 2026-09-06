@@ -74,10 +74,10 @@ function lexical(paragraphs: string[]) {
  * Det betyr også at seed overskriver lokale endringer på de dokumentene den
  * eier. Det er tilsiktet: dette er demoinnhold, ikke redaksjonelt arbeid.
  *
- * Bilder: filene ligger ikke i repoet ennå (design-API-et kutter nedlastinger
- * på 192 kB). Seed oppretter mediedokumenter for de PNG-ene som faktisk
- * finnes i public/images/, og hopper over resten. Legger du filene inn senere
- * og kjører seed på nytt, kobles de opp uten at noe annet røres.
+ * Bilder: demobildene ligger i public/images/ som WebP. Seed oppretter ett
+ * mediedokument per fil og gjenbruker det på tvers av produkter, artikler,
+ * kategorier og sider — samme fil lastes aldri opp to ganger. Mangler en fil,
+ * hoppes den over og logges til slutt, slik at seed kjører gjennom uansett.
  */
 export async function seed(payload: Payload): Promise<void> {
   const log = (msg: string) => payload.logger.info(msg)
@@ -162,24 +162,44 @@ export async function seed(payload: Payload): Promise<void> {
   /* ── Kategorier ─────────────────────────────────────────────────────── */
   const categoryIds = new Map<string, number>()
   const categorySeed = [
-    { title: 'Objekter', slug: 'objekter', intro: 'Steingods og keramikk til daglig bruk.' },
-    { title: 'Tekstil', slug: 'tekstil', intro: 'Lin og ull, vevd for å vare.' },
-    { title: 'Materialer', slug: 'materialer', intro: 'Eik fra Østfold, oljet for hånd.' },
+    {
+      title: 'Objekter',
+      slug: 'objekter',
+      intro: 'Steingods og keramikk til daglig bruk.',
+      image: '/images/stille-stilleben.webp',
+      alt: 'Skål, kanne og lin på en steinbenk — AI-generert materialstudie',
+    },
+    {
+      title: 'Tekstil',
+      slug: 'tekstil',
+      intro: 'Lin og ull, vevd for å vare.',
+      image: '/images/stille-tekstil.webp',
+      alt: 'Lingardin i motlys — AI-generert materialstudie',
+    },
+    {
+      title: 'Materialer',
+      slug: 'materialer',
+      intro: 'Eik fra Østfold, oljet for hånd.',
+      image: '/images/stille-materialer.webp',
+      alt: 'Eikebenk med linpledd — AI-generert materialstudie',
+    },
   ]
 
-  for (const category of categorySeed) {
+  for (const { image: imagePath, alt, ...category } of categorySeed) {
     const existing = await payload.find({
       collection: 'categories',
       where: { slug: { equals: category.slug } },
       limit: 1,
     })
+    const data = { ...category, image: await imageFor(imagePath, alt) }
+
     if (existing.totalDocs > 0) {
       const id = existing.docs[0].id
-      await payload.update({ collection: 'categories', id, data: category })
+      await payload.update({ collection: 'categories', id, data })
       categoryIds.set(category.title, id)
       continue
     }
-    const created = await payload.create({ collection: 'categories', data: category })
+    const created = await payload.create({ collection: 'categories', data })
     categoryIds.set(category.title, created.id)
     log(`Opprettet kategori ${category.slug}`)
   }
@@ -309,13 +329,13 @@ export async function seed(payload: Payload): Promise<void> {
     if ((current.looks ?? []).length === 0) {
       const lookSeed = [
         {
-          image: '/images/stille-lesestund.png',
+          image: '/images/stille-lesestund.webp',
           alt: 'Lesestund — AI-generert materialstudie',
           caption: '01 — Ettermiddag. Ullpledd og keramikk i vinduskarmen.',
           products: ['pledd-i-ull', 'morgenritual'],
         },
         {
-          image: '/images/stille-materialer.png',
+          image: '/images/stille-materialer.webp',
           alt: 'Eik og lin — AI-generert materialstudie',
           caption: '02 — Eik, oljet. Lin, vasket tre ganger.',
           products: ['eik-i-hverdagen', 'lys-gjennom-lin'],
@@ -346,10 +366,13 @@ export async function seed(payload: Payload): Promise<void> {
 
   /* ── Sider ──────────────────────────────────────────────────────────── */
   /*
-   * «Om oss» er lerretets eksempel på en side bygget av blokker. Hero- og
-   * imageText-blokkene krever bilde, så de utelates til filene er lagt inn —
-   * resten av blokktypene fungerer uten, og siden blir dermed en ekte prøve
-   * på blokk-rendringen fra dag én.
+   * «Om oss» er lerretets eksempel på en side bygget av blokker, og den eneste
+   * flaten der alle blokktypene står ved siden av hverandre. Den er derfor også
+   * prøven på blokk-rendringen: går noe galt i en blokk, ses det her først.
+   *
+   * Hero vil ha 3:2 og imageText 4:5 — de to formatene demobildene kommer i.
+   * Blokkene utelates hvis bildet mangler, siden begge har `image` som påkrevd
+   * felt og en side uten hero er bedre enn en seed som stopper.
    */
   const faqDocs = await payload.find({ collection: 'faqs', limit: 10, sort: 'order' })
   const existingPage = await payload.find({
@@ -358,10 +381,25 @@ export async function seed(payload: Payload): Promise<void> {
     limit: 1,
   })
 
-  if (existingPage.totalDocs === 0) {
+  {
     // er generert per blokktype; en heterogen literal-array treffer den ikke uten
     // en cast, og hver blokk er verifisert mot sin egen definisjon i src/blocks/.
-    const layout: any[] = [
+    const layout: any[] = []
+
+    const heroImage = await imageFor(
+      '/images/stille-gardsrom.webp',
+      'Gårdsrom i ettermiddagslys — AI-generert materialstudie',
+    )
+    if (heroImage) {
+      layout.push({
+        blockType: 'hero',
+        eyebrow: 'Om oss',
+        title: 'Et nytt uttrykk, med opphav.',
+        image: heroImage,
+      })
+    }
+
+    layout.push(
       {
         blockType: 'richText',
         body: lexical([
@@ -373,7 +411,22 @@ export async function seed(payload: Payload): Promise<void> {
         blockType: 'quote',
         quote: 'Vi lager ikke ting for å fylle rom. Vi lager ting rommet kan hvile i.',
       },
-    ]
+    )
+
+    const workshopImage = await imageFor(
+      '/images/stille-ritual.webp',
+      'Steinvask og lin — AI-generert materialstudie',
+    )
+    if (workshopImage) {
+      layout.push({
+        blockType: 'imageText',
+        image: workshopImage,
+        imageSide: 'left',
+        eyebrow: 'Verkstedet',
+        title: 'Vi kjenner dem som lager tingene.',
+        body: 'Steingodset formes i Telemark, eiken sages i Østfold, linet veves i Normandie. Vi besøker alle tre minst en gang i året, og vi bestiller aldri mer enn vi vet vi får solgt.',
+      })
+    }
 
     if (faqDocs.totalDocs > 0) {
       layout.push({
@@ -390,17 +443,24 @@ export async function seed(payload: Payload): Promise<void> {
       buttonLabel: 'Meld meg på',
     })
 
-    await payload.create({
-      collection: 'pages',
-      data: {
-        title: 'Et nytt uttrykk, med opphav.',
-        slug: 'om-oss',
-        layout,
-        navPlacement: 'both',
-        _status: 'published',
-      },
-    })
-    log(`Opprettet siden om-oss med ${layout.length} blokker`)
+    const pageData = {
+      title: 'Et nytt uttrykk, med opphav.',
+      slug: 'om-oss',
+      layout,
+      navPlacement: 'both' as const,
+      _status: 'published' as const,
+    }
+
+    // Siden konvergerer, som resten av seed-en. Ble den opprettet før bildene
+    // fantes, mangler den hero- og imageText-blokka — og en seed som bare
+    // oppretter ville aldri rettet det opp.
+    if (existingPage.totalDocs > 0) {
+      await payload.update({ collection: 'pages', id: existingPage.docs[0].id, data: pageData })
+      log(`Oppdaterte siden om-oss med ${layout.length} blokker`)
+    } else {
+      await payload.create({ collection: 'pages', data: pageData })
+      log(`Opprettet siden om-oss med ${layout.length} blokker`)
+    }
   }
 
   /* ── Globals ────────────────────────────────────────────────────────── */
@@ -444,6 +504,10 @@ export async function seed(payload: Payload): Promise<void> {
       title: 'Rom for det',
       titleItalic: 'vesentlige.',
       lead: 'Objekter og fortellinger med plass til hverdagen.',
+      image: await imageFor(
+        '/images/stille-rom.webp',
+        'Benk med puter i ettermiddagslys — AI-generert materialstudie',
+      ),
     },
   })
 
@@ -462,8 +526,7 @@ export async function seed(payload: Payload): Promise<void> {
     const unique = [...new Set(missingImages)]
     payload.logger.warn(
       `${unique.length} bilder mangler i public/images/ og ble hoppet over: ${unique.join(', ')}. ` +
-        'Legg dem inn og kjør seed på nytt for å koble dem opp — se Handoff-oppgaven ' +
-        'task-2026-09-05-stille-bilder.',
+        'Legg filene inn og kjør seed på nytt — de kobles opp uten at noe annet røres.',
     )
   }
 

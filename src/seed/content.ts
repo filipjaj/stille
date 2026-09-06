@@ -26,7 +26,7 @@ export type Product = {
   description: string
 }
 
-const image = (name: string): string => `/images/stille-${name}.png`
+const image = (name: string): string => `/images/stille-${name}.webp`
 
 export const products: Product[] = [
   {
